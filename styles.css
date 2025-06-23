@@ -884,6 +884,13 @@ body {
     color: #666;
 }
 
+.search-result-meta {
+    color: #888;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
 .search-loading {
     display: none;
     align-items: center;

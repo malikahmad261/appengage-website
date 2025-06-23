@@ -175,42 +175,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displaySearchResults(results) {
         searchDropdown.innerHTML = '';
-        currentSearchResults = [];
+        currentSearchResults = results;
 
-        const playStoreResults = results.filter(result => 
-            result.link && result.link.includes('play.google.com/store/apps/details')
-        );
-
-        if (playStoreResults.length === 0) {
+        if (!results || results.length === 0) {
             displayNoResults();
             return;
         }
 
-        playStoreResults.forEach(result => {
-            const appData = parseGooglePlayResult(result);
-            if (appData) {
-                currentSearchResults.push(appData);
-                
-                const resultItem = document.createElement('div');
-                resultItem.className = 'search-result-item';
-                resultItem.innerHTML = `
-                    <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" onerror="this.src='data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"><rect width=\"40\" height=\"40\" fill=\"%23f0f0f0\"/><text x=\"20\" y=\"25\" text-anchor=\"middle\" font-size=\"24\">📱</text></svg>'">
-                    <div class="search-result-info">
-                        <span class="search-result-name">${appData.name}</span>
-                        <span class="search-result-developer">${appData.developer}</span>
-                    </div>
-                `;
-                
-                resultItem.addEventListener('click', () => selectApp(appData));
-                searchDropdown.appendChild(resultItem);
+        results.forEach(appData => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            
+            // Enhanced display with ratings and download counts
+            let additionalInfo = '';
+            if (appData.rating || appData.downloads) {
+                const ratingDisplay = appData.rating ? `⭐ ${appData.rating}` : '';
+                const downloadsDisplay = appData.downloads ? `📥 ${appData.downloads}` : '';
+                const separator = (ratingDisplay && downloadsDisplay) ? ' • ' : '';
+                additionalInfo = `<div class="search-result-meta">${ratingDisplay}${separator}${downloadsDisplay}</div>`;
             }
+
+            resultItem.innerHTML = `
+                <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23f0f0f0\"/%3E%3Ctext x=\"20\" y=\"25\" text-anchor=\"middle\" font-size=\"24\"%3E📱%3C/text%3E%3C/svg%3E'">
+                <div class="search-result-info">
+                    <span class="search-result-name">${appData.name}${appData.featured ? ' 🌟' : ''}</span>
+                    <span class="search-result-developer">${appData.developer}</span>
+                    ${additionalInfo}
+                </div>
+            `;
+            
+            resultItem.addEventListener('click', () => selectApp(appData));
+            searchDropdown.appendChild(resultItem);
         });
 
-        if (currentSearchResults.length > 0) {
-            searchDropdown.classList.add('show');
-        } else {
-            displayNoResults();
-        }
+        searchDropdown.classList.add('show');
     }
 
     function parseGooglePlayResult(result) {
