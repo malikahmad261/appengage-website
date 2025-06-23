@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         }
 
         // Your SERP API key (stored as environment variable for security)
-        const SERP_API_KEY = process.env.SERP_API_KEY || '49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6';
+        const SERP_API_KEY = process.env.SERP_API_KEY;
         
         // Prepare SERP API request
         const params = new URLSearchParams({

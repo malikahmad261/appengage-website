@@ -25,7 +25,7 @@ app.get('/api/search-apps', async (req, res) => {
         }
 
         // Your SERP API key (keep this secure on the server)
-        const SERP_API_KEY = '49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6';
+        const SERP_API_KEY = 'YOUR_SERP_API_KEY_HERE';
         
         // Prepare SERP API request
         const params = new URLSearchParams({
@@ -104,7 +104,7 @@ def search_apps():
     params = {
         'engine': 'google',
         'q': f'{query} site:play.google.com/store/apps',
-        'api_key': '49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6',
+        'api_key': 'YOUR_SERP_API_KEY_HERE',
         'num': 10
     }
     
@@ -146,7 +146,7 @@ if (empty($query)) {
 $params = [
     'engine' => 'google',
     'q' => $query . ' site:play.google.com/store/apps',
-    'api_key' => '49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6',
+    'api_key' => 'YOUR_SERP_API_KEY_HERE',
     'num' => 10
 ];
 

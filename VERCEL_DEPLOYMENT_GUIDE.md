@@ -81,7 +81,7 @@ AppEngage Website/
    - **Output Directory**: Leave empty
 6. **Add Environment Variables**:
    - Click "Environment Variables"
-   - Add: `SERP_API_KEY` = `49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6`
+   - Add: `SERP_API_KEY` = `YOUR_ACTUAL_SERP_API_KEY`
 7. **Click "Deploy"**
 
 #### Option B: Deploy via Vercel CLI
@@ -126,7 +126,7 @@ In the Vercel dashboard:
 3. **Click "Environment Variables"**
 4. **Add the following**:
    - **Name**: `SERP_API_KEY`
-   - **Value**: `49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6`
+   - **Value**: `YOUR_ACTUAL_SERP_API_KEY`
    - **Environments**: Production, Preview, Development (check all)
 5. **Click "Save"**
 

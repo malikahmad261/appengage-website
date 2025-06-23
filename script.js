@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSearchResults = [];
 
     // SERP API Configuration - Replace with your actual API key
-    const SERP_API_KEY = '49176704d5bba434ae660e9f04cb58ae318180225e949b1d52e1f675254f71e6'; // You'll need to replace this with your actual API key
+    // API key is handled by the backend serverless function for security
     const SERP_API_URL = 'https://serpapi.com/search';
 
     function searchGooglePlayApps(query) {
