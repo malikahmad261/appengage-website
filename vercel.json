@@ -1,15 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "**/*.{html,css,js,png,jpg,jpeg,svg,gif,ico}",
-      "use": "@vercel/static"
+  "functions": {
+    "api/search-apps.js": {
+      "maxDuration": 30
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -20,11 +15,6 @@
       "dest": "/$1"
     }
   ],
-  "functions": {
-    "api/search-apps.js": {
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
