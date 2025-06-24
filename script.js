@@ -14,9 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedAppDeveloper = document.getElementById('selected-app-developer')?.textContent || '';
             const selectedAppIcon = document.getElementById('selected-app-icon')?.src || '';
             
-            // Basic validation
-            if (!email || !playstoreUrl) {
-                alert('Please fill in all fields and select an app');
+            // Basic validation with better user feedback
+            if (!email) {
+                alert('Please enter your email address');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            if (!playstoreUrl) {
+                alert('Please search for and select your app from the dropdown first');
+                document.getElementById('app-search').focus();
                 return;
             }
             
