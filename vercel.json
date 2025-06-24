@@ -4,6 +4,9 @@
   "functions": {
     "api/search-apps.js": {
       "maxDuration": 30
+    },
+    "api/submit-form.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [

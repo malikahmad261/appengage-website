@@ -3,32 +3,68 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     const reportForm = document.querySelector('.report-form');
     if (reportForm) {
-        reportForm.addEventListener('submit', function(e) {
+        reportForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const playstoreUrl = document.getElementById('selected-app-url').value;
             
+            // Get selected app details if available
+            const selectedAppName = document.getElementById('selected-app-name')?.textContent || '';
+            const selectedAppDeveloper = document.getElementById('selected-app-developer')?.textContent || '';
+            const selectedAppIcon = document.getElementById('selected-app-icon')?.src || '';
+            
             // Basic validation
             if (!email || !playstoreUrl) {
-                alert('Please fill in all fields');
+                alert('Please fill in all fields and select an app');
                 return;
             }
             
-            // Show success message (in a real app, this would submit to a server)
             const submitBtn = document.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
             
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Thank you! We\'ll send your app analysis report to your email shortly.');
-                reportForm.reset();
-                clearAppSelection();
+            try {
+                // Update button state
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                // Prepare form data
+                const formData = {
+                    email: email,
+                    playstoreUrl: playstoreUrl,
+                    appName: selectedAppName,
+                    appDeveloper: selectedAppDeveloper,
+                    appIcon: selectedAppIcon
+                };
+                
+                // Send to webhook API
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success overlay instead of alert
+                    showSuccessState();
+                    reportForm.reset();
+                    clearAppSelection();
+                } else {
+                    throw new Error(result.error || 'Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                alert('Sorry, there was an error submitting your request. Please try again later.');
+            } finally {
+                // Reset button state
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }, 1500);
+            }
         });
     }
 
@@ -97,49 +133,66 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: "WhatsApp Messenger",
                 developer: "WhatsApp LLC",
                 url: "https://play.google.com/store/apps/details?id=com.whatsapp",
-                icon: "https://play-lh.googleusercontent.com/bYtqbOcTYOlgc6gqZ2rwb8lptHuwlNE75zYJu6Bn076-hTmvd96HH-6v7S0YUAAJXoJN=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/bYtqbOcTYOlgc6gqZ2rwb8lptHuwlNE75zYJu6Bn076-hTmvd96HH-6v7S0YUAAJXoJN=s64-rw",
+                rating: "4.1",
+                downloads: "5B+"
             },
             {
                 name: "Instagram",
                 developer: "Instagram",
                 url: "https://play.google.com/store/apps/details?id=com.instagram.android",
-                icon: "https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=s64-rw",
+                rating: "4.2",
+                downloads: "5B+"
             },
             {
                 name: "Facebook",
                 developer: "Meta Platforms, Inc.",
                 url: "https://play.google.com/store/apps/details?id=com.facebook.katana",
-                icon: "https://play-lh.googleusercontent.com/ccWDU4A7fX1R24v-vvT480ySh26AYp97g1VrIB_FIdjRcuQB2JP2WdY7h_wVVAeSpg=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/ccWDU4A7fX1R24v-vvT480ySh26AYp97g1VrIB_FIdjRcuQB2JP2WdY7h_wVVAeSpg=s64-rw",
+                rating: "3.9",
+                downloads: "5B+"
             },
             {
                 name: "TikTok",
                 developer: "TikTok Pte. Ltd.",
                 url: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically",
-                icon: "https://play-lh.googleusercontent.com/q_TdQf03Va9YYsiJfDXEQJBBFlKN-kaTWL_yaQufIaVyUxLbp9U9LiZdmnY3W-nfLPo=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/q_TdQf03Va9YYsiJfDXEQJBBFlKN-kaTWL_yaQufIaVyUxLbp9U9LiZdmnY3W-nfLPo=s64-rw",
+                rating: "4.4",
+                downloads: "1B+",
+                featured: true
             },
             {
                 name: "YouTube",
                 developer: "Google LLC",
                 url: "https://play.google.com/store/apps/details?id=com.google.android.youtube",
-                icon: "https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc=s64-rw",
+                rating: "4.3",
+                downloads: "10B+"
             },
             {
                 name: "Spotify",
                 developer: "Spotify AB",
                 url: "https://play.google.com/store/apps/details?id=com.spotify.music",
-                icon: "https://play-lh.googleusercontent.com/cShys-AmJ93dB0SV8kE6Fl5eSaf4-qMMZdwEDKI5VEmKAXfzOqbiaeAsqqrEBCTdIEs=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/cShys-AmJ93dB0SV8kE6Fl5eSaf4-qMMZdwEDKI5VEmKAXfzOqbiaeAsqqrEBCTdIEs=s64-rw",
+                rating: "4.3",
+                downloads: "1B+"
             },
             {
                 name: "Netflix",
                 developer: "Netflix, Inc.",
                 url: "https://play.google.com/store/apps/details?id=com.netflix.mediaclient",
-                icon: "https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI=s64-rw",
+                rating: "4.1",
+                downloads: "1B+"
             },
             {
                 name: "Uber",
                 developer: "Uber Technologies, Inc.",
                 url: "https://play.google.com/store/apps/details?id=com.ubercab",
-                icon: "https://play-lh.googleusercontent.com/QDs5ka7_qZCojp_9dXhLSC0sLI7Zpo8WdTsj2rkb5zTRY8jLd2I80NjWMnSZEe4yowQ=s64-rw"
+                icon: "https://play-lh.googleusercontent.com/QDs5ka7_qZCojp_9dXhLSC0sLI7Zpo8WdTsj2rkb5zTRY8jLd2I80NjWMnSZEe4yowQ=s64-rw",
+                rating: "4.0",
+                downloads: "1B+"
             }
         ];
 
@@ -157,12 +210,23 @@ document.addEventListener('DOMContentLoaded', function() {
         results.forEach(appData => {
             const resultItem = document.createElement('div');
             resultItem.className = 'search-result-item';
+            
+            // Enhanced display with ratings and download counts
+            let additionalInfo = '';
+            if (appData.rating || appData.downloads) {
+                const ratingDisplay = appData.rating ? `<span class="rating">${appData.rating} stars</span>` : '';
+                const downloadsDisplay = appData.downloads ? `<span class="downloads">${appData.downloads} downloads</span>` : '';
+                const separator = (ratingDisplay && downloadsDisplay) ? ' • ' : '';
+                additionalInfo = `<div class="search-result-meta">${ratingDisplay}${separator}${downloadsDisplay}</div>`;
+            }
+
             resultItem.innerHTML = `
                 <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" 
-                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23f0f0f0\"/%3E%3Ctext x=\"20\" y=\"25\" text-anchor=\"middle\" font-size=\"24\"%3E📱%3C/text%3E%3C/svg%3E'">
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23e1e5e9\" rx=\"8\"/%3E%3Crect x=\"12\" y=\"8\" width=\"16\" height=\"20\" fill=\"%23fff\" rx=\"2\"/%3E%3Crect x=\"14\" y=\"10\" width=\"12\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"12\" width=\"8\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"14\" width=\"10\" height=\"1\" fill=\"%23ddd\"/%3E%3C/svg%3E'">
                 <div class="search-result-info">
-                    <span class="search-result-name">${appData.name}</span>
+                    <span class="search-result-name">${appData.name}${appData.featured ? ' (Featured)' : ''}</span>
                     <span class="search-result-developer">${appData.developer}</span>
+                    ${additionalInfo}
                 </div>
             `;
             
@@ -189,17 +253,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Enhanced display with ratings and download counts
             let additionalInfo = '';
             if (appData.rating || appData.downloads) {
-                const ratingDisplay = appData.rating ? `⭐ ${appData.rating}` : '';
-                const downloadsDisplay = appData.downloads ? `📥 ${appData.downloads}` : '';
+                const ratingDisplay = appData.rating ? `<span class="rating">${appData.rating} stars</span>` : '';
+                const downloadsDisplay = appData.downloads ? `<span class="downloads">${appData.downloads} downloads</span>` : '';
                 const separator = (ratingDisplay && downloadsDisplay) ? ' • ' : '';
                 additionalInfo = `<div class="search-result-meta">${ratingDisplay}${separator}${downloadsDisplay}</div>`;
             }
 
             resultItem.innerHTML = `
                 <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" 
-                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23f0f0f0\"/%3E%3Ctext x=\"20\" y=\"25\" text-anchor=\"middle\" font-size=\"24\"%3E📱%3C/text%3E%3C/svg%3E'">
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23e1e5e9\" rx=\"8\"/%3E%3Crect x=\"12\" y=\"8\" width=\"16\" height=\"20\" fill=\"%23fff\" rx=\"2\"/%3E%3Crect x=\"14\" y=\"10\" width=\"12\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"12\" width=\"8\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"14\" width=\"10\" height=\"1\" fill=\"%23ddd\"/%3E%3C/svg%3E'">
                 <div class="search-result-info">
-                    <span class="search-result-name">${appData.name}${appData.featured ? ' 🌟' : ''}</span>
+                    <span class="search-result-name">${appData.name}${appData.featured ? ' (Featured)' : ''}</span>
                     <span class="search-result-developer">${appData.developer}</span>
                     ${additionalInfo}
                 </div>
@@ -315,6 +379,51 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clearSelectionBtn) {
         clearSelectionBtn.addEventListener('click', clearAppSelection);
     }
+
+    // Success state functions
+    function showSuccessState() {
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) {
+            successOverlay.classList.add('show');
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function hideSuccessState() {
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) {
+            successOverlay.classList.remove('show');
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Success state close button listener
+    const successCloseBtn = document.getElementById('success-close-btn');
+    if (successCloseBtn) {
+        successCloseBtn.addEventListener('click', hideSuccessState);
+    }
+
+    // Close success state when clicking outside the content
+    const successOverlay = document.getElementById('success-overlay');
+    if (successOverlay) {
+        successOverlay.addEventListener('click', function(e) {
+            if (e.target === successOverlay) {
+                hideSuccessState();
+            }
+        });
+    }
+
+    // Close success state with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const successOverlay = document.getElementById('success-overlay');
+            if (successOverlay && successOverlay.classList.contains('show')) {
+                hideSuccessState();
+            }
+        }
+    });
     
     // Handle report pill clicks
     const reportPills = document.querySelectorAll('.report-pill');
@@ -415,47 +524,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add scroll effect to navbar
     window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
-        if (window.scrollY > 100) {
+        const poweredBySection = document.querySelector('.powered-by');
+        
+        // Calculate when the powered-by section comes into view
+        const poweredByOffset = poweredBySection ? poweredBySection.offsetTop : 200;
+        
+        if (window.scrollY >= poweredByOffset - 100) {
             header.style.background = 'rgba(255, 255, 255, 0.95)';
             header.style.backdropFilter = 'blur(10px)';
+            header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.08)';
         } else {
-            header.style.background = '#fff';
-            header.style.backdropFilter = 'none';
+            header.style.background = 'rgba(255, 255, 255, 0.9)';
+            header.style.backdropFilter = 'blur(20px)';
+            header.style.boxShadow = 'none';
         }
     });
     
-    // Interactive features section
-    const featureItems = document.querySelectorAll('.feature-item');
-    const featureImage = document.getElementById('feature-image');
-    
-    if (featureItems.length > 0 && featureImage) {
-        featureItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // Remove active class from all items
-                featureItems.forEach(i => i.classList.remove('active'));
-                
-                // Add active class to clicked item
-                this.classList.add('active');
-                
-                // Get the feature type from data attribute
-                const featureType = this.getAttribute('data-feature');
-                
-                // Add changing class for animation
-                featureImage.classList.add('changing');
-                
-                // Change image after a brief delay for smooth transition
-                setTimeout(() => {
-                    featureImage.src = `images/${featureType}.png`;
-                    featureImage.alt = `${featureType.replace('-', ' ')} dashboard`;
-                    
-                    // Remove changing class after image loads
-                    featureImage.onload = function() {
-                        featureImage.classList.remove('changing');
-                    };
-                }, 150);
-            });
-        });
-    }
+
     
     // Add intersection observer for animations
     const observerOptions = {
@@ -480,4 +565,38 @@ document.addEventListener('DOMContentLoaded', function() {
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
     });
+
+    // Interactive features section for new features
+    const featureNewItems = document.querySelectorAll('.feature-new-item');
+    const featureNewImage = document.getElementById('feature-new-image');
+    
+    if (featureNewItems.length > 0 && featureNewImage) {
+        featureNewItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                featureNewItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Get the feature type from data attribute
+                const featureType = this.getAttribute('data-feature');
+                
+                // Add changing class for animation
+                const featureNewImageContainer = document.getElementById('feature-new-image-container');
+                featureNewImageContainer.classList.add('changing');
+                
+                // Change image after a brief delay for smooth transition
+                setTimeout(() => {
+                    featureNewImage.src = `images/${featureType}.png`;
+                    featureNewImage.alt = `${featureType.replace('-', ' ')} dashboard`;
+                    
+                    // Remove changing class after image loads
+                    featureNewImage.onload = function() {
+                        featureNewImageContainer.classList.remove('changing');
+                    };
+                }, 150);
+            });
+        });
+    }
 }); 
