@@ -24,13 +24,22 @@ export default async function handler(req, res) {
             });
         }
 
-        // Prepare data for n8n webhook
+        // Prepare data for n8n webhook - ensure proper JSON structure
         const webhookData = {
-            email,
-            googlePlayUrl: playstoreUrl,
-            timestamp: new Date().toISOString(),
-            source: 'https://www.appengage.io/'
+            body: {
+                email,
+                googlePlayUrl: playstoreUrl,
+                timestamp: new Date().toISOString(),
+                source: 'https://www.appengage.io/',
+                // Include app details if available
+                ...(appName && { appName }),
+                ...(appDeveloper && { appDeveloper }),
+                ...(appIcon && { appIcon })
+            }
         };
+
+        // Log the webhook data being sent (for debugging)
+        console.log('Sending webhook data:', JSON.stringify(webhookData, null, 2));
 
         // Send data to n8n webhook
         const webhookResponse = await fetch(webhookUrl, {
@@ -43,8 +52,12 @@ export default async function handler(req, res) {
         });
 
         if (!webhookResponse.ok) {
+            const errorText = await webhookResponse.text();
+            console.error('Webhook error response:', errorText);
             throw new Error(`Webhook failed: ${webhookResponse.status} ${webhookResponse.statusText}`);
         }
+
+        console.log('Webhook sent successfully');
 
         // Return success response
         return res.status(200).json({ 
