@@ -1,13 +1,20 @@
 // Smooth scrolling for navigation links
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - Script starting');
+    
     // Handle form submission
     const reportForm = document.querySelector('.report-form');
+    console.log('Form found:', reportForm);
+    
     if (reportForm) {
         reportForm.addEventListener('submit', async function(e) {
+            console.log('Form submit triggered!');
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const playstoreUrl = document.getElementById('selected-app-url').value;
+            
+            console.log('Form values:', { email, playstoreUrl });
             
             // Get selected app details if available
             const selectedAppName = document.getElementById('selected-app-name')?.textContent || '';
@@ -72,6 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
+        });
+    }
+
+    // Backup: Direct button click listener
+    const submitBtn = document.querySelector('.submit-btn');
+    if (submitBtn) {
+        console.log('Submit button found:', submitBtn);
+        submitBtn.addEventListener('click', function(e) {
+            console.log('Submit button clicked directly!');
         });
     }
 
