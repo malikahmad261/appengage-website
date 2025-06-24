@@ -603,7 +603,7 @@ body {
 
 .free-report-content {
     position: relative;
-    z-index: 2;
+    z-index: 10;
 }
 
 .free-report .section-title {
@@ -665,6 +665,8 @@ body {
     border-radius: 12px;
     border: none;
     box-shadow: none;
+    position: relative;
+    z-index: 15;
 }
 
 .form-group {
@@ -691,6 +693,9 @@ body {
     color: #ffffff;
     font-weight: 400;
     letter-spacing: -0.005em;
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
 }
 
 .form-group input:focus {
@@ -712,6 +717,9 @@ body {
     transition: all 0.2s ease;
     width: 100%;
     letter-spacing: -0.01em;
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
 }
 
 .submit-btn:hover {
