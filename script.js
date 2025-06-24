@@ -1,5 +1,72 @@
 // Smooth scrolling for navigation links
 document.addEventListener('DOMContentLoaded', function() {
+    // Hamburger menu functionality
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+    // Toggle mobile menu
+    hamburgerMenu.addEventListener('click', function() {
+        hamburgerMenu.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        
+        // Prevent body scroll when menu is open
+        if (mobileNav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Close menu when clicking on a link and add smooth scrolling
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Only handle internal links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Close menu
+                hamburgerMenu.classList.remove('active');
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Smooth scroll to target
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            } else {
+                // For external links, just close the menu
+                hamburgerMenu.classList.remove('active');
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // Close menu when clicking outside
+    mobileNav.addEventListener('click', function(e) {
+        if (e.target === mobileNav) {
+            hamburgerMenu.classList.remove('active');
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+            hamburgerMenu.classList.remove('active');
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
     // Handle form submission
     const reportForm = document.querySelector('.report-form');
     if (reportForm) {
@@ -56,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Show success overlay instead of alert
+                    // Show success overlay
                     showSuccessState();
                     reportForm.reset();
                     clearAppSelection();
@@ -84,21 +151,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearSelectionBtn = document.getElementById('clear-selection');
 
     let searchTimeout;
-    let currentSearchResults = [];
-
-    // SERP API Configuration - Replace with your actual API key
-    // API key is handled by the backend serverless function for security
-    const SERP_API_URL = 'https://serpapi.com/search';
 
     function searchGooglePlayApps(query) {
         // Show loading state
         searchLoading.classList.add('show');
         searchDropdown.classList.remove('show');
 
-        // Try real SERP API first, fallback to mock if needed
-        const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? `http://localhost:3000/api/search-apps?q=${encodeURIComponent(query)}`
-            : `/api/search-apps?q=${encodeURIComponent(query)}`;
+        // Try API first, fallback to mock if needed
+        const apiUrl = `/api/search-apps?q=${encodeURIComponent(query)}`;
 
         fetch(apiUrl)
             .then(response => {
@@ -117,16 +177,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('SERP API Error:', error);
+                console.error('API Error:', error);
                 
                 // Fallback to mock search if API fails
-                console.log('Falling back to mock search...');
                 setTimeout(() => {
                     searchLoading.classList.remove('show');
-                    
                     const mockResults = generateMockResults(query);
                     if (mockResults.length > 0) {
-                        displayMockResults(mockResults);
+                        displaySearchResults(mockResults);
                     } else {
                         displayNoResults();
                     }
@@ -166,8 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 url: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically",
                 icon: "https://play-lh.googleusercontent.com/q_TdQf03Va9YYsiJfDXEQJBBFlKN-kaTWL_yaQufIaVyUxLbp9U9LiZdmnY3W-nfLPo=s64-rw",
                 rating: "4.4",
-                downloads: "1B+",
-                featured: true
+                downloads: "1B+"
             },
             {
                 name: "YouTube",
@@ -207,46 +264,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return mockApps.filter(app => 
             app.name.toLowerCase().includes(query.toLowerCase()) ||
             app.developer.toLowerCase().includes(query.toLowerCase())
-        ).slice(0, 5); // Limit to 5 results
-    }
-
-    function displayMockResults(results) {
-        searchDropdown.innerHTML = '';
-        currentSearchResults = results;
-
-        results.forEach(appData => {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'search-result-item';
-            
-            // Enhanced display with ratings and download counts
-            let additionalInfo = '';
-            if (appData.rating || appData.downloads) {
-                const ratingDisplay = appData.rating ? `<span class="rating">${appData.rating} stars</span>` : '';
-                const downloadsDisplay = appData.downloads ? `<span class="downloads">${appData.downloads} downloads</span>` : '';
-                const separator = (ratingDisplay && downloadsDisplay) ? ' • ' : '';
-                additionalInfo = `<div class="search-result-meta">${ratingDisplay}${separator}${downloadsDisplay}</div>`;
-            }
-
-            resultItem.innerHTML = `
-                <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" 
-                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23e1e5e9\" rx=\"8\"/%3E%3Crect x=\"12\" y=\"8\" width=\"16\" height=\"20\" fill=\"%23fff\" rx=\"2\"/%3E%3Crect x=\"14\" y=\"10\" width=\"12\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"12\" width=\"8\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"14\" width=\"10\" height=\"1\" fill=\"%23ddd\"/%3E%3C/svg%3E'">
-                <div class="search-result-info">
-                    <span class="search-result-name">${appData.name}${appData.featured ? ' (Featured)' : ''}</span>
-                    <span class="search-result-developer">${appData.developer}</span>
-                    ${additionalInfo}
-                </div>
-            `;
-            
-            resultItem.addEventListener('click', () => selectApp(appData));
-            searchDropdown.appendChild(resultItem);
-        });
-
-        searchDropdown.classList.add('show');
+        ).slice(0, 5);
     }
 
     function displaySearchResults(results) {
         searchDropdown.innerHTML = '';
-        currentSearchResults = results;
 
         if (!results || results.length === 0) {
             displayNoResults();
@@ -270,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <img src="${appData.icon}" alt="${appData.name}" class="search-result-icon" 
                      onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"%3E%3Crect width=\"40\" height=\"40\" fill=\"%23e1e5e9\" rx=\"8\"/%3E%3Crect x=\"12\" y=\"8\" width=\"16\" height=\"20\" fill=\"%23fff\" rx=\"2\"/%3E%3Crect x=\"14\" y=\"10\" width=\"12\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"12\" width=\"8\" height=\"1\" fill=\"%23ddd\"/%3E%3Crect x=\"14\" y=\"14\" width=\"10\" height=\"1\" fill=\"%23ddd\"/%3E%3C/svg%3E'">
                 <div class="search-result-info">
-                    <span class="search-result-name">${appData.name}${appData.featured ? ' (Featured)' : ''}</span>
+                    <span class="search-result-name">${appData.name}</span>
                     <span class="search-result-developer">${appData.developer}</span>
                     ${additionalInfo}
                 </div>
@@ -281,36 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         searchDropdown.classList.add('show');
-    }
-
-    function parseGooglePlayResult(result) {
-        try {
-            // Extract app name from title
-            const title = result.title || '';
-            const appName = title.split(' - ')[0].trim();
-            
-            // Extract developer from snippet or title
-            let developer = 'Unknown Developer';
-            if (result.snippet) {
-                const snippetMatch = result.snippet.match(/by (.+?)(\.|$)/i);
-                if (snippetMatch) {
-                    developer = snippetMatch[1].trim();
-                }
-            }
-
-            // Generate a placeholder icon URL (in production, you'd extract this from the page)
-            const iconUrl = `https://via.placeholder.com/40x40/4285f4/white?text=${appName.charAt(0)}`;
-
-            return {
-                name: appName,
-                developer: developer,
-                url: result.link,
-                icon: iconUrl
-            };
-        } catch (error) {
-            console.error('Error parsing result:', error);
-            return null;
-        }
     }
 
     function displayNoResults() {
@@ -392,7 +384,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const successOverlay = document.getElementById('success-overlay');
         if (successOverlay) {
             successOverlay.classList.add('show');
-            // Prevent body scroll
             document.body.style.overflow = 'hidden';
         }
     }
@@ -401,7 +392,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const successOverlay = document.getElementById('success-overlay');
         if (successOverlay) {
             successOverlay.classList.remove('show');
-            // Restore body scroll
             document.body.style.overflow = '';
         }
     }
@@ -460,7 +450,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewFullReportBtns = document.querySelectorAll('.view-full-report-btn');
     viewFullReportBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            const category = this.getAttribute('data-category');
             const fileName = this.getAttribute('data-file');
             
             // Add loading state to button
@@ -469,65 +458,21 @@ document.addEventListener('DOMContentLoaded', function() {
             this.disabled = true;
             this.style.opacity = '0.7';
             
-            // Small delay for better UX, then open report in same page
+            // Small delay for better UX, then open report
             setTimeout(() => {
                 if (fileName) {
-                    // Navigate to the report in the same page
                     window.location.href = `sample-reports/${fileName}`;
                 } else {
-                    // Fallback for any missing file attributes
-                    const fileMap = {
-                        'fintech': 'venmo_sample_report.html',
-                        'ecommerce': 'amazon_sample_report.html',
-                        'streaming': 'netflix_sample_report.html',
-                        'gaming': 'minecraft_sample_report.html'
-                    };
-                    
-                    if (fileMap[category]) {
-                        window.location.href = `sample-reports/${fileMap[category]}`;
-                    } else {
-                        alert(`Report for ${category} is not available yet.`);
-                        // Reset button state
-                        this.textContent = originalText;
-                        this.disabled = false;
-                        this.style.opacity = '1';
-                    }
+                    alert('Report file not found.');
+                    // Reset button state
+                    this.textContent = originalText;
+                    this.disabled = false;
+                    this.style.opacity = '1';
                 }
             }, 500);
         });
     });
 
-    // Handle legacy view report button clicks (if any exist)
-    const viewReportBtns = document.querySelectorAll('.view-report-btn');
-    viewReportBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const reportCard = this.closest('.report-card');
-            const category = reportCard.querySelector('.report-category').textContent;
-            const appName = reportCard.querySelector('.app-name').textContent;
-            
-            // Check if this is the Fintech Cash App report
-            if (category === 'Fintech' && appName === 'Cash App') {
-                // Add loading state to button
-                const originalText = this.textContent;
-                this.textContent = 'Opening Report...';
-                this.disabled = true;
-                this.style.opacity = '0.7';
-                
-                // Small delay for better UX, then open report
-                setTimeout(() => {
-                    window.open('sample-reports/app_review_report.html', '_blank');
-                    
-                    // Reset button state
-                    this.textContent = originalText;
-                    this.disabled = false;
-                    this.style.opacity = '1';
-                }, 500);
-            } else {
-                alert(`Viewing ${category} report for ${appName}. This would open a sample report in a real application.`);
-            }
-        });
-    });
-    
     // Add scroll effect to navbar
     window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
@@ -545,32 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
             header.style.backdropFilter = 'blur(20px)';
             header.style.boxShadow = 'none';
         }
-    });
-    
-
-    
-    // Add intersection observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe feature cards and report cards
-    const cards = document.querySelectorAll('.feature-card, .report-card');
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
     });
 
     // Interactive features section for new features

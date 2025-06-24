@@ -3,10 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AppEngage - Turn App Reviews into Product Roadmap</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>AppEngage - Turn App Reviews into Product Roadmap | AI-Powered App Analytics</title>
+    <meta name="title" content="AppEngage - Turn App Reviews into Product Roadmap | AI-Powered App Analytics">
+    <meta name="description" content="Transform user reviews into actionable product insights with AI-powered analytics. Get instant reports on feature requests, user complaints, and competitor mentions delivered to your inbox.">
+    <meta name="keywords" content="app reviews, product analytics, user feedback, app insights, product roadmap, AI analytics, mobile app analysis">
+    <meta name="author" content="AppEngage">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://appengage.io/">
+    <meta property="og:title" content="AppEngage - Turn App Reviews into Product Roadmap">
+    <meta property="og:description" content="Transform user reviews into actionable product insights with AI-powered analytics. Get instant reports delivered to your inbox.">
+    <meta property="og:image" content="https://appengage.io/images/preview-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:site_name" content="AppEngage">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://appengage.io/">
+    <meta property="twitter:title" content="AppEngage - Turn App Reviews into Product Roadmap">
+    <meta property="twitter:description" content="Transform user reviews into actionable product insights with AI-powered analytics. Get instant reports delivered to your inbox.">
+    <meta property="twitter:image" content="https://appengage.io/images/preview-image.png">
+    
+    <!-- Favicons -->
     <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="apple-touch-icon" href="images/Webclip.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/Webclip.png">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.serphouse.com">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "AppEngage",
+        "description": "AI-powered app review analytics platform that transforms user feedback into actionable product insights",
+        "url": "https://appengage.io",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Free app review analysis report"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "AppEngage",
+            "email": "insights@appengage.io"
+        },
+        "featureList": [
+            "AI-powered review analysis",
+            "Key insights extraction",
+            "Feature request identification",
+            "User complaint analysis",
+            "Competitor mention tracking"
+        ]
+    }
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -16,14 +85,33 @@
                 <div class="logo">
                     <img src="images/appengage-logo.svg" alt="AppEngage" class="logo-image">
                 </div>
-                <nav class="navigation">
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                
+                <!-- Desktop Navigation -->
+                <nav class="navigation desktop-nav">
                     <div class="nav-links">
                         <a href="#features">Features</a>
                         <a href="#sample-reports">Sample Reports</a>
                         <a href="#resources">Resources</a>
                     </div>
                 </nav>
-                <a href="#try-free" class="cta-button">Start for Free</a>
+                <a href="#try-free" class="cta-button desktop-cta">Start for Free</a>
+                
+                <!-- Mobile Navigation Menu -->
+                <div class="mobile-nav" id="mobile-nav">
+                    <div class="mobile-nav-content">
+                        <a href="#features" class="mobile-nav-link">Features</a>
+                        <a href="#sample-reports" class="mobile-nav-link">Sample Reports</a>
+                        <a href="#resources" class="mobile-nav-link">Resources</a>
+                        <a href="#try-free" class="mobile-nav-link mobile-cta">Start for Free</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -33,13 +121,13 @@
         <div class="container">
             <div class="hero-content">
                 <div class="powered-by">
-                    <img src="images/powered-by-anthropic.svg" alt="Powered by Anthropic" class="anthropic-logo">
+                    <img src="images/powered-by-anthropic.svg" alt="Powered by Anthropic" class="anthropic-logo" loading="lazy">
                 </div>
                 <h1>Turn App Reviews into<br>Product Roadmap</h1>
                 <p class="hero-subtitle">AI powered insights from App Reviews - delivered to your inbox instantly</p>
                 <div class="hero-actions">
                     <a href="#try-free" class="hero-cta-primary">Start for free</a>
-                    <a href="#demo" class="hero-cta-secondary">Book a demo</a>
+                    <a href="book-demo.html" class="hero-cta-secondary">Book a demo</a>
                 </div>
                 <p class="hero-disclaimer">No credit card required. Cancel anytime.</p>
             </div>
@@ -61,35 +149,35 @@
                             <h3>Key Insights</h3>
                             <p>Get key product insights and recommendations for product improvement</p>
                             <div class="feature-new-image-mobile">
-                                <img src="images/key-insights.png" alt="Key Insights Dashboard" class="mobile-feature-new-img">
+                                <img src="images/key-insights.png" alt="Key Insights Dashboard" class="mobile-feature-new-img" loading="lazy">
                             </div>
                         </div>
                         <div class="feature-new-item" data-feature="feature-requests">
                             <h3>Feature Requests</h3>
                             <p>Get to know the features your users actually want</p>
                             <div class="feature-new-image-mobile">
-                                <img src="images/feature-requests.png" alt="Feature Requests Dashboard" class="mobile-feature-new-img">
+                                <img src="images/feature-requests.png" alt="Feature Requests Dashboard" class="mobile-feature-new-img" loading="lazy">
                             </div>
                         </div>
                         <div class="feature-new-item" data-feature="user-complaints">
                             <h3>User Complaints</h3>
                             <p>Understand the common pain points your users are facing</p>
                             <div class="feature-new-image-mobile">
-                                <img src="images/user-complaints.png" alt="User Complaints Dashboard" class="mobile-feature-new-img">
+                                <img src="images/user-complaints.png" alt="User Complaints Dashboard" class="mobile-feature-new-img" loading="lazy">
                             </div>
                         </div>
                         <div class="feature-new-item" data-feature="competitor-mentions">
                             <h3>Competitor Insights</h3>
                             <p>See how users are comparing your product to your competitors</p>
                             <div class="feature-new-image-mobile">
-                                <img src="images/competitor-mentions.png" alt="Competitor Insights Dashboard" class="mobile-feature-new-img">
+                                <img src="images/competitor-mentions.png" alt="Competitor Insights Dashboard" class="mobile-feature-new-img" loading="lazy">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="features-new-visual">
                     <div class="features-new-image" id="feature-new-image-container">
-                        <img src="images/key-insights.png" alt="AppEngage Features Dashboard" id="feature-new-image">
+                        <img src="images/key-insights.png" alt="AppEngage Features Dashboard" id="feature-new-image" fetchpriority="high">
                     </div>
                 </div>
             </div>
@@ -113,43 +201,38 @@
             <!-- Report Preview Area -->
             <div class="report-preview-container">
                 <div class="report-preview active" id="preview-fintech">
-                    <div class="preview-content">
-                        <div class="preview-image">
-                            <button class="view-full-report-btn" data-category="fintech" data-file="venmo_sample_report.html">View Full Report</button>
-                            <img src="images/venmo-report.png" alt="Venmo App Analysis Report" class="report-preview-img">
-                        </div>
+                    <div class="preview-image">
+                        <button class="view-full-report-btn" data-category="fintech" data-file="venmo_sample_report.html">View Full Report</button>
+                        <img src="images/venmo-report.png" alt="Venmo App Analysis Report" class="report-preview-img" loading="lazy">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-ecommerce">
-                    <div class="preview-content">
-                        <div class="preview-image">
-                            <button class="view-full-report-btn" data-category="ecommerce" data-file="amazon_sample_report.html">View Full Report</button>
-                            <img src="images/amazon-report.png" alt="Amazon App Analysis Report" class="report-preview-img">
-                        </div>
+                    <div class="preview-image">
+                        <button class="view-full-report-btn" data-category="ecommerce" data-file="amazon_sample_report.html">View Full Report</button>
+                        <img src="images/amazon-report.png" alt="Amazon App Analysis Report" class="report-preview-img" loading="lazy">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-streaming">
-                    <div class="preview-content">
-                        <div class="preview-image">
-                            <button class="view-full-report-btn" data-category="streaming" data-file="netflix_sample_report.html">View Full Report</button>
-                            <img src="images/netflix-report.png" alt="Netflix App Analysis Report" class="report-preview-img">
-                        </div>
+                    <div class="preview-image">
+                        <button class="view-full-report-btn" data-category="streaming" data-file="netflix_sample_report.html">View Full Report</button>
+                        <img src="images/netflix-report.png" alt="Netflix App Analysis Report" class="report-preview-img" loading="lazy">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-gaming">
-                    <div class="preview-content">
-                        <div class="preview-image">
-                            <button class="view-full-report-btn" data-category="gaming" data-file="minecraft_sample_report.html">View Full Report</button>
-                            <img src="images/minecraft-report.png" alt="Minecraft App Analysis Report" class="report-preview-img">
-                        </div>
+                    <div class="preview-image">
+                        <button class="view-full-report-btn" data-category="gaming" data-file="minecraft_sample_report.html">View Full Report</button>
+                        <img src="images/minecraft-report.png" alt="Minecraft App Analysis Report" class="report-preview-img" loading="lazy">
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Divider -->
+    <div class="section-divider"></div>
 
     <!-- How to get free report section -->
     <section id="try-free" class="free-report">
@@ -161,15 +244,15 @@
                         <div class="process-steps">
                             <div class="step">
                                 <div class="step-icon">
-                                    <img src="images/fill-form.svg" alt="Fill form with email and URL" class="step-svg">
+                                    <img src="images/fill-form.svg" alt="Fill form with email and URL" class="step-svg" loading="lazy">
                                 </div>
                                 <div class="step-text">
-                                    <p>Simply enter your email & your app's Google Play URL</p>
+                                    <p>Search your app & enter your email</p>
                                 </div>
                             </div>
                             <div class="step">
                                 <div class="step-icon">
-                                    <img src="images/fetch-reviews.svg" alt="Fetch user reviews" class="step-svg">
+                                    <img src="images/fetch-reviews.svg" alt="Fetch user reviews" class="step-svg" loading="lazy">
                                 </div>
                                 <div class="step-text">
                                     <p>AppEngage seamlessly collects your most recent user reviews</p>
@@ -177,7 +260,7 @@
                             </div>
                             <div class="step">
                                 <div class="step-icon">
-                                    <img src="images/ai-analysis.svg" alt="AI analyzes reviews" class="step-svg">
+                                    <img src="images/ai-analysis.svg" alt="AI analyzes reviews" class="step-svg" loading="lazy">
                                 </div>
                                 <div class="step-text">
                                     <p>Advanced AI models thoroughly analyze user feedback patterns</p>
@@ -185,7 +268,7 @@
                             </div>
                             <div class="step">
                                 <div class="step-icon">
-                                    <img src="images/get-email.svg" alt="Get report via email" class="step-svg">
+                                    <img src="images/get-email.svg" alt="Get report via email" class="step-svg" loading="lazy">
                                 </div>
                                 <div class="step-text">
                                     <p>You receive a comprehensive insights report directly in your inbox</p>
@@ -193,7 +276,7 @@
                             </div>
                         </div>
                         <div class="form-container">
-                            <form class="report-form">
+                            <form class="report-form" role="form" aria-label="Request free app analysis report">
                                 <div class="form-group">
                                     <label for="app-search">Search Your App</label>
                                     <div class="app-search-container">
@@ -207,13 +290,13 @@
                                     <input type="hidden" id="selected-app-url" name="playstore-url">
                                     <div class="selected-app" id="selected-app" style="display: none;">
                                         <div class="selected-app-info">
-                                            <img class="selected-app-icon" id="selected-app-icon" src="" alt="">
+                                            <img class="selected-app-icon" id="selected-app-icon" src="" alt="" loading="lazy">
                                             <div class="selected-app-details">
                                                 <span class="selected-app-name" id="selected-app-name"></span>
                                                 <span class="selected-app-developer" id="selected-app-developer"></span>
                                             </div>
                                         </div>
-                                        <button type="button" class="clear-selection" id="clear-selection">×</button>
+                                        <button type="button" class="clear-selection" id="clear-selection" aria-label="Clear app selection">×</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -235,7 +318,7 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-logo">
-                        <img src="images/appengage-logo.svg" alt="AppEngage" class="footer-logo-image">
+                        <img src="images/appengage-logo.svg" alt="AppEngage" class="footer-logo-image" loading="lazy">
                     </div>
                     <p class="footer-mission">
                         Our mission is to help businesses grow by offering innovative app review analytics, and data-driven product insights.
@@ -250,7 +333,7 @@
                         <ul>
                             <li><a href="#features">Features</a></li>
                             <li><a href="#sample-reports">Sample Reports</a></li>
-                            <li><a href="#demo">Book Demo</a></li>
+                            <li><a href="book-demo.html">Book Demo</a></li>
                             <li><a href="#try-free">Get Started</a></li>
                         </ul>
                     </div>

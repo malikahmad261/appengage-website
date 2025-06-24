@@ -6,23 +6,70 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Amazon Shopping User Review Analysis</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../styles.css">
     <style>
         /* Base Typography */
         html, body, table, tr, td, div, p, h1, h2, h3, h4, h5, h6, span, a, li, ul, ol {
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         }
         
-        body {
+        .report-content {
             line-height: 1.8;
             color: rgba(0, 0, 0, 0.84);
             max-width: 700px;
             margin: 0 auto;
             padding: 20px;
             font-weight: 200;
+            margin-top: 6rem; /* Add space for fixed header */
         }
         
-        /* Headings */
-        h1 {
+        /* Scope all styles to report-content */
+        .report-content h1,
+        .report-content h2,
+        .report-content h3,
+        .report-content p,
+        .report-content hr,
+        .report-content .member-tag,
+        .report-content .count-badge,
+        .report-content .data-table,
+        .report-content .data-table th,
+        .report-content .data-table td,
+        .report-content .ratings-container,
+        .report-content .rating-average,
+        .report-content .rating-chart,
+        .report-content .meta-section,
+        .report-content .meta-author,
+        .report-content .meta-author-name,
+        .report-content .meta-divider,
+        .report-content .meta-powered-by,
+        .report-content .meta-date,
+        .report-content .meta-count,
+        .report-content .rating-title,
+        .report-content .rating-value,
+        .report-content .rating-scale,
+        .report-content .rating-stars { /* inherit existing styles */ }
+        
+        /* Ensure header CTA button matches homepage exactly */
+        .header .cta-button {
+            background: #1a1a1a !important;
+            color: white !important;
+            padding: 0.5rem 1.5rem !important;
+            border-radius: 30px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important; /* var(--font-size-sm) = 14px */
+            transition: all 0.2s ease !important;
+            border: 1px solid #1a1a1a !important;
+            letter-spacing: -0.01em !important;
+            text-decoration: none !important;
+            margin-left: auto !important;
+        }
+        
+        .header .cta-button:hover {
+            background: #333333 !important;
+        }
+        
+        /* All remaining styles are scoped to .report-content */
+        .report-content h1 {
             font-size: 42px;
             line-height: 1.25;
             margin-top: 12px;
@@ -31,7 +78,7 @@
             letter-spacing: -0.015em;
         }
         
-        h2 {
+        .report-content h2 {
             font-size: 30px;
             line-height: 1.25;
             margin-top: 2em;
@@ -40,7 +87,7 @@
             letter-spacing: -0.012em;
         }
         
-        h3 {
+        .report-content h3 {
             font-size: 24px;
             line-height: 1.25;
             margin-top: 1.5em;
@@ -49,7 +96,7 @@
             letter-spacing: -0.009em;
         }
         
-        p {
+        .report-content p {
             margin-bottom: 2em;
             font-size: 20px;
             margin-top: 0;
@@ -392,6 +439,28 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../images/appengage-logo.svg" alt="AppEngage" class="logo-image">
+                    </a>
+                </div>
+                <nav class="navigation">
+                    <div class="nav-links">
+                        <a href="../index.html#features">Features</a>
+                        <a href="../index.html#sample-reports">Sample Reports</a>
+                        <a href="../index.html#resources">Resources</a>
+                    </div>
+                </nav>
+                <a href="../index.html#try-free" class="cta-button">Start for Free</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="report-content">
     <!-- Header Section -->
     <div class="member-tag">
         User Reviews - Google Play
@@ -1072,31 +1141,87 @@
         </div>
     </div>
     
-    <hr>
-    
-    <!-- Call to Action Button - Table-based layout for better email compatibility -->
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin: 30px 0; background-color: #000000; border-radius: 8px;">
-        <tr>
-            <td style="padding: 30px;">
-                <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td>
-                            <h3 class="cta-heading">Schedule this report</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 20px;">
-                            <div class="cta-text">Found this report useful, click on set schedule to get this report every week or every month</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 20px;">
-                            <a href="https://tally.so/r/w4zW7r" class="cta-button">Set Schedule</a>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
+    </div>
+
+    <!-- How to get free report section -->
+    <section id="try-free" class="free-report">
+        <div class="container">
+            <div class="free-report-background">
+                <div class="free-report-content">
+                    <h2 class="section-title">How to get a free report for your app?</h2>
+                    <div class="process-content">
+                        <div class="process-steps">
+                            <div class="step">
+                                <div class="step-icon">
+                                    <img src="../images/fill-form.svg" alt="Fill form with email and URL" class="step-svg">
+                                </div>
+                                <div class="step-text">
+                                    <p>Search your app & enter your email</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">
+                                    <img src="../images/fetch-reviews.svg" alt="Fetch user reviews" class="step-svg">
+                                </div>
+                                <div class="step-text">
+                                    <p>AppEngage seamlessly collects your most recent user reviews</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">
+                                    <img src="../images/ai-analysis.svg" alt="AI analyzes reviews" class="step-svg">
+                                </div>
+                                <div class="step-text">
+                                    <p>Advanced AI models thoroughly analyze user feedback patterns</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">
+                                    <img src="../images/get-email.svg" alt="Get report via email" class="step-svg">
+                                </div>
+                                <div class="step-text">
+                                    <p>You receive a comprehensive insights report directly in your inbox</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form class="report-form">
+                                <div class="form-group">
+                                    <label for="app-search">Search Your App</label>
+                                    <div class="app-search-container">
+                                        <input type="text" id="app-search" name="app-search" placeholder="Type your app name..." autocomplete="off">
+                                        <div class="search-dropdown" id="search-dropdown"></div>
+                                        <div class="search-loading" id="search-loading">
+                                            <div class="loading-spinner"></div>
+                                            <span>Searching apps...</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="selected-app-url" name="playstore-url">
+                                    <div class="selected-app" id="selected-app" style="display: none;">
+                                        <div class="selected-app-info">
+                                            <img class="selected-app-icon" id="selected-app-icon" src="" alt="">
+                                            <div class="selected-app-details">
+                                                <span class="selected-app-name" id="selected-app-name"></span>
+                                                <span class="selected-app-developer" id="selected-app-developer"></span>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="clear-selection" id="clear-selection">×</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email address..." required>
+                                </div>
+                                <button type="submit" class="submit-btn">Get Free Report</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../script.js"></script>
 </body>
 </html>
