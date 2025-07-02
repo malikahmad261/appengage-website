@@ -1,26 +1,32 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Netflix User Review Analysis</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap">
+    <title>Netflix App Review Analysis | AppEngage</title>
+    <meta name="description" content="Detailed AI-powered analysis of Netflix app reviews including user feedback, feature requests, and actionable insights.">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="../images/Favicon.png">
+    <link rel="apple-touch-icon" href="../images/Webclip.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="../styles.css">
     <style>
-        /* Base Typography */
-        html, body, table, tr, td, div, p, h1, h2, h3, h4, h5, h6, span, a, li, ul, ol {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-        }
-        
+        /* Report-specific styles */
         .report-content {
             line-height: 1.8;
             color: rgba(0, 0, 0, 0.84);
             max-width: 700px;
             margin: 0 auto;
-            padding: 20px;
+            padding: var(--space-5);
             font-weight: 200;
-            margin-top: 6rem; /* Add space for fixed header */
+            margin-top: calc(var(--nav-height) + var(--space-8)); /* Add space for fixed header */
         }
         
         /* Scope all styles to report-content */
@@ -28,34 +34,7 @@
         .report-content h2 { font-size: 30px; line-height: 1.25; margin-top: 2em; margin-bottom: 0.5em; font-weight: 700; letter-spacing: -0.012em; }
         .report-content h3 { font-size: 24px; line-height: 1.25; margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; letter-spacing: -0.009em; }
         .report-content p { margin-bottom: 2em; font-size: 20px; margin-top: 0; }
-        
-        /* Ensure header CTA button matches homepage exactly */
-        .header .cta-button {
-            background: #1a1a1a !important;
-            color: white !important;
-            padding: 0.5rem 1.5rem !important;
-            border-radius: 30px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important; /* var(--font-size-sm) = 14px */
-            transition: all 0.2s ease !important;
-            border: 1px solid #1a1a1a !important;
-            letter-spacing: -0.01em !important;
-            text-decoration: none !important;
-            margin-left: auto !important;
-        }
-        
-        .header .cta-button:hover {
-            background: #333333 !important;
-        }
-        
-        body {
-            line-height: 1.8;
-            color: rgba(0, 0, 0, 0.84);
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-            font-weight: 200;
-        }
+
         
         /* Headings */
         h1 {
@@ -437,19 +416,38 @@
                         <img src="../images/appengage-logo.svg" alt="AppEngage" class="logo-image">
                     </a>
                 </div>
-                <nav class="navigation">
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                
+                <!-- Desktop Navigation -->
+                <nav class="navigation desktop-nav">
                     <div class="nav-links">
                         <a href="../index.html#features">Features</a>
                         <a href="../index.html#sample-reports">Sample Reports</a>
                         <a href="../index.html#resources">Resources</a>
                     </div>
                 </nav>
-                <a href="../index.html#try-free" class="cta-button">Start for Free</a>
+                <a href="../index.html#try-free" class="cta-button desktop-cta">Start for Free</a>
+                
+                <!-- Mobile Navigation Menu -->
+                <div class="mobile-nav" id="mobile-nav">
+                    <div class="mobile-nav-content">
+                        <a href="../index.html#features" class="mobile-nav-link">Features</a>
+                        <a href="../index.html#sample-reports" class="mobile-nav-link">Sample Reports</a>
+                        <a href="../index.html#resources" class="mobile-nav-link">Resources</a>
+                        <a href="../index.html#try-free" class="mobile-nav-link mobile-cta">Start for Free</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="report-content">
+
     <!-- Header Section -->
     <div class="member-tag">
         User Reviews - Google Play
@@ -1211,6 +1209,54 @@
         </div>
     </section>
 
-    <script src="../script.js"></script>
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mobileNav = document.getElementById('mobile-nav');
+            
+            if (hamburgerMenu && mobileNav) {
+                hamburgerMenu.addEventListener('click', function() {
+                    mobileNav.classList.toggle('active');
+                });
+                
+                // Close mobile menu when clicking on links
+                const mobileNavLinks = mobileNav.querySelectorAll('a');
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileNav.classList.remove('active');
+                    });
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!hamburgerMenu.contains(e.target) && !mobileNav.contains(e.target)) {
+                        mobileNav.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        // Header scroll effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.header');
+            
+            if (!header) return;
+            
+            function handleScroll() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+            
+            // Initial check
+            handleScroll();
+            
+            // Listen for scroll events
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        });
+    </script>
 </body>
 </html>

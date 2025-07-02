@@ -153,13 +153,11 @@
                 </div>
                 <div class="feature-content">
                     <div class="feature-text">
-                        <h2 class="feature-title">Get key product insights and recommendations for improvement</h2>
-                        <p class="feature-description">
-                            Discover the most important patterns in your user feedback with AI-powered analysis that identifies critical insights you might miss. Our advanced algorithms process thousands of reviews to surface the insights that matter most for your product strategy.
-                        </p>
-                        <p class="feature-description">
-                            Every insight comes with actionable recommendations and priority scores, helping you focus on changes that will have the biggest impact on user satisfaction and retention.
-                        </p>
+                        <h2 class="feature-title">AI-powered product insights</h2>
+                        <ul class="feature-list">
+                            <li>Identifies critical patterns you might miss in user feedback</li>
+                            <li>Actionable recommendations with priority scores for maximum impact</li>
+                        </ul>
                     </div>
                     <div class="feature-visual">
                         <div class="feature-showcase">
@@ -181,13 +179,11 @@
                 </div>
                 <div class="feature-content">
                     <div class="feature-text">
-                        <h2 class="feature-title">Discover the features your users actually want</h2>
-                        <p class="feature-description">
-                            Stop guessing what features to build next. Our AI analyzes user reviews to identify the most requested features, ranked by frequency and user sentiment. Get a clear picture of what your users are asking for most.
-                        </p>
-                        <p class="feature-description">
-                            Each feature request comes with user quotes, sentiment analysis, and estimated impact scores to help you prioritize your product roadmap with confidence and data-driven insights.
-                        </p>
+                        <h2 class="feature-title">Most requested features</h2>
+                        <ul class="feature-list">
+                            <li>Features ranked by frequency and user sentiment</li>
+                            <li>Impact scores to prioritize your product roadmap</li>
+                        </ul>
                     </div>
                     <div class="feature-visual">
                         <div class="feature-showcase">
@@ -209,13 +205,11 @@
                 </div>
                 <div class="feature-content">
                     <div class="feature-text">
-                        <h2 class="feature-title">Understand the common pain points your users are facing</h2>
-                        <p class="feature-description">
-                            Identify and address user frustrations before they impact your ratings. Our analysis categorizes complaints by severity and frequency, giving you a clear roadmap for fixing the issues that matter most to your users.
-                        </p>
-                        <p class="feature-description">
-                            Get detailed breakdowns of complaint categories, trending issues, and user sentiment over time to proactively address problems and improve user experience.
-                        </p>
+                        <h2 class="feature-title">User pain points analysis</h2>
+                        <ul class="feature-list">
+                            <li>Complaints categorized by severity and frequency</li>
+                            <li>Track trending issues and sentiment over time</li>
+                        </ul>
                     </div>
                     <div class="feature-visual">
                         <div class="feature-showcase">
@@ -237,13 +231,11 @@
                 </div>
                 <div class="feature-content">
                     <div class="feature-text">
-                        <h2 class="feature-title">See how users compare your product to competitors</h2>
-                        <p class="feature-description">
-                            Gain valuable competitive intelligence from user reviews that mention rival products. Understand what users love about competitors and identify opportunities to differentiate your product in the market.
-                        </p>
-                        <p class="feature-description">
-                            Track competitor mentions, sentiment analysis, and feature comparisons to stay ahead of the competition and capitalize on gaps in their offerings.
-                        </p>
+                        <h2 class="feature-title">Competitor intelligence</h2>
+                        <ul class="feature-list">
+                            <li>Understand what users love about competitors</li>
+                            <li>Track mentions, sentiment, and feature comparisons</li>
+                        </ul>
                     </div>
                     <div class="feature-visual">
                         <div class="feature-showcase">
@@ -277,29 +269,29 @@
             <div class="report-preview-container">
                 <div class="report-preview active" id="preview-fintech">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="fintech" data-file="venmo_sample_report.html">View Full Report</button>
-                        <img src="images/venmo-report.png" alt="Venmo App Analysis Report" class="report-preview-img" loading="lazy">
+                        <button class="view-full-report-btn" data-category="fintech" data-file="venmo_analysis_report.html">View Full Report</button>
+                        <img src="images/venmo-report.png" alt="Venmo App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-ecommerce">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="ecommerce" data-file="amazon_sample_report.html">View Full Report</button>
-                        <img src="images/amazon-report.png" alt="Amazon App Analysis Report" class="report-preview-img" loading="lazy">
+                        <button class="view-full-report-btn" data-category="ecommerce" data-file="amazon_analysis_report.html">View Full Report</button>
+                        <img src="images/amazon-report.png" alt="Amazon App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-streaming">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="streaming" data-file="netflix_sample_report.html">View Full Report</button>
-                        <img src="images/netflix-report.png" alt="Netflix App Analysis Report" class="report-preview-img" loading="lazy">
+                        <button class="view-full-report-btn" data-category="streaming" data-file="netflix_analysis_report.html">View Full Report</button>
+                        <img src="images/netflix-report.png" alt="Netflix App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
                 <div class="report-preview" id="preview-gaming">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="gaming" data-file="minecraft_sample_report.html">View Full Report</button>
-                        <img src="images/minecraft-report.png" alt="Minecraft App Analysis Report" class="report-preview-img" loading="lazy">
+                        <button class="view-full-report-btn" data-category="gaming" data-file="minecraft_analysis_report.html">View Full Report</button>
+                        <img src="images/minecraft-report.png" alt="Minecraft App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
             </div>
@@ -519,7 +511,7 @@
                 btn.addEventListener('click', function() {
                     const reportFile = this.getAttribute('data-file');
                     if (reportFile) {
-                        window.open(`sample-reports/${reportFile}`, '_blank');
+                        window.location.href = `sample-reports/${reportFile}`;
                     }
                 });
             });
