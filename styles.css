@@ -100,6 +100,18 @@
   :root {
     --container-padding: var(--space-4);
     --grid-gap: var(--space-4);
+    /* Mobile font size overrides */
+    --font-xs: 0.625rem;
+    --font-sm: 0.75rem;
+    --font-base: 0.875rem;
+    --font-lg: 1rem;
+    --font-xl: 1.125rem;
+    --font-2xl: 1.25rem;
+    --font-3xl: 1.5rem;
+    --font-4xl: 2rem;
+    --font-5xl: 2.25rem;
+    --font-6xl: 2.5rem;
+    --font-7xl: 3rem;
   }
 }
 
@@ -451,6 +463,22 @@ body {
 }
 
 /* Hero Responsive */
+@media (max-width: 640px) {
+  .hero-subtitle {
+    font-size: var(--font-base);
+  }
+  
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    font-size: var(--font-base);
+    padding: var(--space-2) var(--space-6);
+  }
+  
+  .hero-disclaimer {
+    font-size: var(--font-xs);
+  }
+}
+
 @media (min-width: 640px) {
   .hero-actions {
     flex-direction: row;
@@ -536,9 +564,7 @@ body {
 }
 
 .feature-badge-icon {
-  width: 14px;
-  height: 14px;
-  opacity: 0.8;
+  display: none;
 }
 
 /* Feature Content */
@@ -623,7 +649,6 @@ body {
   width: 100%;
   border-radius: var(--space-4);
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
   background-color: var(--color-cream-background);
   padding: var(--space-8) 0 0 var(--space-8);
   position: relative;
@@ -635,11 +660,23 @@ body {
   display: block;
   border-radius: var(--space-3) var(--space-3) var(--space-3) 0;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-5%);
 }
 
 /* Features Responsive */
+@media (max-width: 640px) {
+  .features-subtitle {
+    font-size: var(--font-base);
+  }
+  
+  .feature-description {
+    font-size: var(--font-sm);
+  }
+  
+  .feature-list li {
+    font-size: var(--font-sm);
+  }
+}
+
 @media (min-width: 640px) {
   .features {
     padding: var(--space-10) 0;
@@ -659,11 +696,6 @@ body {
     font-size: var(--font-sm);
   }
   
-  .feature-badge-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
   .feature-list li {
     font-size: var(--font-lg);
     margin-bottom: var(--space-4);
@@ -675,7 +707,6 @@ body {
   
   .showcase-image {
     border-radius: var(--space-5);
-    box-shadow: var(--shadow-xl);
     padding: var(--space-10) 0 0 var(--space-10);
   }
   
@@ -701,11 +732,6 @@ body {
     margin-bottom: var(--space-4);
     padding: var(--space-2) var(--space-4);
     font-size: var(--font-sm);
-  }
-  
-  .feature-badge-icon {
-    width: 16px;
-    height: 16px;
   }
   
   .feature-content {
@@ -822,7 +848,6 @@ body {
   background-color: var(--color-cream-background);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
   padding: var(--space-8) var(--space-8) 0 var(--space-8);
 }
 
@@ -860,7 +885,6 @@ body {
   transition: transform var(--transition-slow) var(--easing-ease-out);
   background-color: var(--color-white);
   border-radius: var(--space-3) var(--space-3) var(--space-3) 0;
-  box-shadow: var(--shadow-md);
   transform: translateY(5%);
 }
 
@@ -895,7 +919,6 @@ body {
 .view-full-report-btn:hover {
   background-color: var(--color-gray-900);
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: var(--shadow-md);
 }
 
 /* Sample Reports Responsive */
@@ -905,7 +928,7 @@ body {
   }
   
   .reports-subtitle {
-    font-size: var(--font-lg);
+    font-size: var(--font-base);
     margin-bottom: var(--space-8);
   }
   
@@ -933,6 +956,8 @@ body {
     opacity: 1;
     margin: 0;
     width: auto;
+    font-size: var(--font-xs);
+    padding: var(--space-2) var(--space-4);
   }
 }
 
@@ -949,10 +974,6 @@ body {
   .report-preview-container {
     max-width: 700px;
     padding: var(--space-10) var(--space-10) 0 var(--space-10);
-  }
-  
-  .report-preview-container:hover {
-    box-shadow: var(--shadow-xl);
   }
 }
 
@@ -1275,10 +1296,8 @@ body {
   }
   
   .free-report-background {
-    border-radius: 0;
-    padding: var(--space-8) var(--space-4);
-    margin-left: calc(-1 * var(--container-padding));
-    margin-right: calc(-1 * var(--container-padding));
+    border-radius: var(--space-4);
+    padding: var(--space-6) var(--space-4);
   }
   
   .free-report .section-title {
@@ -1557,6 +1576,28 @@ body {
 }
 
 /* Footer Responsive */
+@media (max-width: 767px) {
+  .footer-mission {
+    font-size: var(--font-sm);
+  }
+  
+  .contact-email {
+    font-size: var(--font-xs);
+  }
+  
+  .footer-section h4 {
+    font-size: var(--font-base);
+  }
+  
+  .footer-section ul li a {
+    font-size: var(--font-sm);
+  }
+  
+  .footer-bottom p {
+    font-size: var(--font-xs);
+  }
+}
+
 @media (min-width: 768px) {
   .footer-content {
     grid-template-columns: 2fr 1fr;
