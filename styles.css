@@ -1086,7 +1086,7 @@ body {
 .form-group input[type="email"] {
   width: 100%;
   padding: var(--space-4);
-  border: 2px solid var(--color-gray-600);
+  border: none;
   border-radius: var(--space-2);
   font-size: var(--font-base);
   font-family: var(--font-primary);
@@ -1098,7 +1098,6 @@ body {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus {
-  border-color: var(--color-white);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
@@ -1118,8 +1117,7 @@ body {
   left: 0;
   right: 0;
   background: var(--color-gray-800);
-  border: 2px solid var(--color-gray-600);
-  border-top: none;
+  border: none;
   border-radius: 0 0 var(--space-2) var(--space-2);
   max-height: 200px;
   overflow-y: auto;
@@ -1313,7 +1311,7 @@ body {
   }
   
   .step {
-    padding: var(--space-3);
+    padding: var(--space-2) 0;
     gap: var(--space-3);
   }
   
@@ -1323,7 +1321,7 @@ body {
   }
   
   .step-text p {
-    font-size: var(--font-sm);
+    font-size: var(--font-base);
   }
   
   .form-container {
