@@ -2,6 +2,8 @@
 // File: api/search-apps.js
 
 export default async function handler(req, res) {
+    console.log('Search function started.');
+
     // Enable CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,13 +18,16 @@ export default async function handler(req, res) {
 
     // Only allow GET requests
     if (req.method !== 'GET') {
+        console.log('Method not allowed:', req.method);
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
         const { query } = req.query;
+        console.log('Received query:', query);
         
         if (!query) {
+            console.log('Query parameter is missing.');
             return res.status(400).json({ error: 'Query parameter is required' });
         }
 
@@ -30,8 +35,10 @@ export default async function handler(req, res) {
         const SERP_API_KEY = process.env.SERP_API_KEY;
         
         if (!SERP_API_KEY) {
+            console.error('SERP_API_KEY environment variable not found.');
             throw new Error('SERP API key not configured');
         }
+        console.log('SERP API Key is present.');
         
         // Prepare SERP API request using Google Play Store API
         const params = new URLSearchParams({
@@ -44,13 +51,17 @@ export default async function handler(req, res) {
         });
 
         // Call SERP API
+        console.log('Fetching from SerpApi with query:', query);
         const response = await fetch(`https://serpapi.com/search?${params}`);
         
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('SerpApi response not OK:', response.status, errorText);
             throw new Error(`SERP API responded with status: ${response.status}`);
         }
         
         const data = await response.json();
+        console.log('Successfully received data from SerpApi.');
 
         // Process results from Google Play Store API
         let playStoreResults = [];
@@ -97,6 +108,8 @@ export default async function handler(req, res) {
             )
             .slice(0, 8);
 
+        console.log(`Found ${uniqueResults.length} unique results.`);
+
         if (uniqueResults.length > 0) {
             res.status(200).json({ 
                 success: true,
@@ -105,6 +118,7 @@ export default async function handler(req, res) {
                 query: query 
             });
         } else {
+            console.log('No results found from SerpApi, returning fallback.');
             // Fallback to mock search if no results
             const mockApps = [
                 { title: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://play-lh.googleusercontent.com/bYtqbOcTYOlbel5rXFBQDaXj_d3vAj5KqPqz7FXJ1FNJFNqCbUrwPnD7aRMpDJVa5A=s64-rw' },
@@ -121,7 +135,7 @@ export default async function handler(req, res) {
         }
 
     } catch (error) {
-        console.error('SERP API Error:', error);
+        console.error('Caught an error in search function:', error.message);
         
         // Enhanced fallback search for better user experience
         const mockApps = [
