@@ -1119,7 +1119,9 @@ body {
 }
 
 .search-dropdown.show {
-  display: block;
+  display: block !important;
+  visibility: visible;
+  opacity: 1;
 }
 
 .dropdown-item {
