@@ -51,8 +51,11 @@ export default async function handler(req, res) {
         });
 
         // Call SERP API
+        const apiUrl = `https://serpapi.com/search?${params}`;
         console.log('Fetching from SerpApi with query:', query);
-        const response = await fetch(`https://serpapi.com/search?${params}`);
+        console.log('Full SerpApi URL (without API key):', apiUrl.replace(/api_key=[^&]+/, 'api_key=***'));
+        console.log('SerpApi parameters:', Object.fromEntries(params));
+        const response = await fetch(apiUrl);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -124,7 +127,8 @@ export default async function handler(req, res) {
             // Fallback to mock search if no results
             const mockApps = [
                 { title: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://play-lh.googleusercontent.com/bYtqbOcTYOlbel5rXFBQDaXj_d3vAj5KqPqz7FXJ1FNJFNqCbUrwPnD7aRMpDJVa5A=s64-rw' },
-                { title: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://play-lh.googleusercontent.com/3Mz0YpIKWBaHnGjG_oSGqHvmHc1QTN5k_LMRWzS3UGqJ6HbJGHhGHhGHhGHhGHhGHhG=s64-rw' }
+                { title: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://play-lh.googleusercontent.com/3Mz0YpIKWBaHnGjG_oSGqHvmHc1QTN5k_LMRWzS3UGqJ6HbJGHhGHhGHhGHhGHhGHhG=s64-rw' },
+                { title: 'easypaisa', developer: 'Telenor Microfinance Bank', url: 'https://play.google.com/store/apps/details?id=pk.com.telenor.phoenix', icon: 'https://via.placeholder.com/64x64/00A651/white?text=E', snippet: 'Mobile Financial Services', rating: 4.2, reviews: '100K+', downloads: '10M+' }
             ].filter(app => app.title.toLowerCase().includes(query.toLowerCase()));
 
             res.status(200).json({ 
@@ -148,7 +152,8 @@ export default async function handler(req, res) {
             { title: 'Spotify', developer: 'Spotify AB', url: 'https://play.google.com/store/apps/details?id=com.spotify.music', icon: 'https://via.placeholder.com/64x64/1DB954/white?text=S', snippet: 'Music and Podcasts', rating: 4.3, reviews: '20M+', downloads: '1B+' },
             { title: 'Uber', developer: 'Uber Technologies, Inc.', url: 'https://play.google.com/store/apps/details?id=com.ubercab', icon: 'https://via.placeholder.com/64x64/000000/white?text=U', snippet: 'Request a ride', rating: 4.1, reviews: '5M+', downloads: '500M+' },
             { title: 'YouTube', developer: 'Google LLC', url: 'https://play.google.com/store/apps/details?id=com.google.android.youtube', icon: 'https://via.placeholder.com/64x64/FF0000/white?text=Y', snippet: 'Watch, upload and share videos', rating: 4.1, reviews: '50M+', downloads: '10B+' },
-            { title: 'TikTok', developer: 'TikTok Pte. Ltd.', url: 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically', icon: 'https://via.placeholder.com/64x64/000000/white?text=T', snippet: 'Make Your Day', rating: 4.4, reviews: '50M+', downloads: '1B+' }
+            { title: 'TikTok', developer: 'TikTok Pte. Ltd.', url: 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically', icon: 'https://via.placeholder.com/64x64/000000/white?text=T', snippet: 'Make Your Day', rating: 4.4, reviews: '50M+', downloads: '1B+' },
+            { title: 'easypaisa', developer: 'Telenor Microfinance Bank', url: 'https://play.google.com/store/apps/details?id=pk.com.telenor.phoenix', icon: 'https://via.placeholder.com/64x64/00A651/white?text=E', snippet: 'Mobile Financial Services', rating: 4.2, reviews: '100K+', downloads: '10M+' }
         ].filter(app => app.title.toLowerCase().includes(req.query.query?.toLowerCase() || ''));
 
         res.status(200).json({ 
