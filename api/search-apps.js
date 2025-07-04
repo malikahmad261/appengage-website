@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { q: query } = req.query;
+        const { query } = req.query;
         
         if (!query) {
             return res.status(400).json({ error: 'Query parameter is required' });
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
         if (data.app_highlight) {
             const app = data.app_highlight;
             playStoreResults.push({
-                name: app.title || 'Unknown App',
+                title: app.title || 'Unknown App',
                 developer: app.author || 'Unknown Developer',
                 url: app.link || '',
                 icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
         if (data.organic_results && Array.isArray(data.organic_results)) {
             const organicApps = data.organic_results.map(app => {
                 return {
-                    name: app.title || 'Unknown App',
+                    title: app.title || 'Unknown App',
                     developer: app.author || 'Unknown Developer', 
                     url: app.link || '',
                     icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
                     downloads: app.downloads || null,
                     featured: false
                 };
-            }).filter(app => app.name && app.name !== 'Unknown App');
+            }).filter(app => app.title && app.title !== 'Unknown App');
 
             playStoreResults = playStoreResults.concat(organicApps);
         }
@@ -93,25 +93,27 @@ export default async function handler(req, res) {
         // Remove duplicates and limit results
         const uniqueResults = playStoreResults
             .filter((app, index, self) => 
-                index === self.findIndex(a => a.name === app.name && a.developer === app.developer)
+                index === self.findIndex(a => a.title === app.title && a.developer === app.developer)
             )
             .slice(0, 8);
 
         if (uniqueResults.length > 0) {
             res.status(200).json({ 
-                results: uniqueResults,
+                success: true,
+                apps: uniqueResults,
                 total: uniqueResults.length,
                 query: query 
             });
         } else {
             // Fallback to mock search if no results
             const mockApps = [
-                { name: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://play-lh.googleusercontent.com/bYtqbOcTYOlbel5rXFBQDaXj_d3vAj5KqPqz7FXJ1FNJFNqCbUrwPnD7aRMpDJVa5A=s64-rw' },
-                { name: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://play-lh.googleusercontent.com/3Mz0YpIKWBaHnGjG_oSGqHvmHc1QTN5k_LMRWzS3UGqJ6HbJGHhGHhGHhGHhGHhGHhG=s64-rw' }
-            ].filter(app => app.name.toLowerCase().includes(query.toLowerCase()));
+                { title: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://play-lh.googleusercontent.com/bYtqbOcTYOlbel5rXFBQDaXj_d3vAj5KqPqz7FXJ1FNJFNqCbUrwPnD7aRMpDJVa5A=s64-rw' },
+                { title: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://play-lh.googleusercontent.com/3Mz0YpIKWBaHnGjG_oSGqHvmHc1QTN5k_LMRWzS3UGqJ6HbJGHhGHhGHhGHhGHhGHhG=s64-rw' }
+            ].filter(app => app.title.toLowerCase().includes(query.toLowerCase()));
 
             res.status(200).json({ 
-                results: mockApps,
+                success: true,
+                apps: mockApps,
                 total: mockApps.length,
                 query: query,
                 fallback: true
@@ -123,20 +125,21 @@ export default async function handler(req, res) {
         
         // Enhanced fallback search for better user experience
         const mockApps = [
-            { name: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://via.placeholder.com/64x64/25D366/white?text=W', snippet: 'Simple. Reliable. Secure.', rating: 4.1, reviews: '50M+', downloads: '5B+' },
-            { name: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://via.placeholder.com/64x64/E4405F/white?text=I', snippet: 'Create and share photos, stories, and videos', rating: 4.2, reviews: '100M+', downloads: '5B+' },
-            { name: 'Facebook', developer: 'Meta Platforms, Inc.', url: 'https://play.google.com/store/apps/details?id=com.facebook.katana', icon: 'https://via.placeholder.com/64x64/1877F2/white?text=F', snippet: 'Find friends and discover new ones', rating: 3.9, reviews: '50M+', downloads: '5B+' },
-            { name: 'Netflix', developer: 'Netflix, Inc.', url: 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient', icon: 'https://via.placeholder.com/64x64/E50914/white?text=N', snippet: 'Watch TV shows & movies', rating: 4.1, reviews: '10M+', downloads: '1B+' },
-            { name: 'Spotify', developer: 'Spotify AB', url: 'https://play.google.com/store/apps/details?id=com.spotify.music', icon: 'https://via.placeholder.com/64x64/1DB954/white?text=S', snippet: 'Music and Podcasts', rating: 4.3, reviews: '20M+', downloads: '1B+' },
-            { name: 'Uber', developer: 'Uber Technologies, Inc.', url: 'https://play.google.com/store/apps/details?id=com.ubercab', icon: 'https://via.placeholder.com/64x64/000000/white?text=U', snippet: 'Request a ride', rating: 4.1, reviews: '5M+', downloads: '500M+' },
-            { name: 'YouTube', developer: 'Google LLC', url: 'https://play.google.com/store/apps/details?id=com.google.android.youtube', icon: 'https://via.placeholder.com/64x64/FF0000/white?text=Y', snippet: 'Watch, upload and share videos', rating: 4.1, reviews: '50M+', downloads: '10B+' },
-            { name: 'TikTok', developer: 'TikTok Pte. Ltd.', url: 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically', icon: 'https://via.placeholder.com/64x64/000000/white?text=T', snippet: 'Make Your Day', rating: 4.4, reviews: '50M+', downloads: '1B+' }
-        ].filter(app => app.name.toLowerCase().includes(req.query.q?.toLowerCase() || ''));
+            { title: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://via.placeholder.com/64x64/25D366/white?text=W', snippet: 'Simple. Reliable. Secure.', rating: 4.1, reviews: '50M+', downloads: '5B+' },
+            { title: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://via.placeholder.com/64x64/E4405F/white?text=I', snippet: 'Create and share photos, stories, and videos', rating: 4.2, reviews: '100M+', downloads: '5B+' },
+            { title: 'Facebook', developer: 'Meta Platforms, Inc.', url: 'https://play.google.com/store/apps/details?id=com.facebook.katana', icon: 'https://via.placeholder.com/64x64/1877F2/white?text=F', snippet: 'Find friends and discover new ones', rating: 3.9, reviews: '50M+', downloads: '5B+' },
+            { title: 'Netflix', developer: 'Netflix, Inc.', url: 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient', icon: 'https://via.placeholder.com/64x64/E50914/white?text=N', snippet: 'Watch TV shows & movies', rating: 4.1, reviews: '10M+', downloads: '1B+' },
+            { title: 'Spotify', developer: 'Spotify AB', url: 'https://play.google.com/store/apps/details?id=com.spotify.music', icon: 'https://via.placeholder.com/64x64/1DB954/white?text=S', snippet: 'Music and Podcasts', rating: 4.3, reviews: '20M+', downloads: '1B+' },
+            { title: 'Uber', developer: 'Uber Technologies, Inc.', url: 'https://play.google.com/store/apps/details?id=com.ubercab', icon: 'https://via.placeholder.com/64x64/000000/white?text=U', snippet: 'Request a ride', rating: 4.1, reviews: '5M+', downloads: '500M+' },
+            { title: 'YouTube', developer: 'Google LLC', url: 'https://play.google.com/store/apps/details?id=com.google.android.youtube', icon: 'https://via.placeholder.com/64x64/FF0000/white?text=Y', snippet: 'Watch, upload and share videos', rating: 4.1, reviews: '50M+', downloads: '10B+' },
+            { title: 'TikTok', developer: 'TikTok Pte. Ltd.', url: 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically', icon: 'https://via.placeholder.com/64x64/000000/white?text=T', snippet: 'Make Your Day', rating: 4.4, reviews: '50M+', downloads: '1B+' }
+        ].filter(app => app.title.toLowerCase().includes(req.query.query?.toLowerCase() || ''));
 
         res.status(200).json({ 
-            results: mockApps.slice(0, 8),
+            success: true,
+            apps: mockApps.slice(0, 8),
             total: mockApps.length,
-            query: req.query.q || '',
+            query: req.query.query || '',
             fallback: true,
             error: 'Using fallback search due to API error'
         });

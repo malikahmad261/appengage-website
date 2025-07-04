@@ -556,8 +556,8 @@
                     showLoading();
                     hideDropdown();
                     
-                    const response = await fetch(`/api/search-apps.js?query=${encodeURIComponent(query)}`);
-                    const data = await response.json();
+                                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
                     
                     hideLoading();
                     
