@@ -1091,7 +1091,7 @@ body {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .form-group input[type="text"]::placeholder,
@@ -1110,12 +1110,14 @@ body {
   left: 0;
   right: 0;
   background: var(--color-gray-800);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: none;
   border-radius: 0 0 var(--space-2) var(--space-2);
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
   display: none;
+  box-shadow: var(--shadow-lg);
 }
 
 .search-dropdown.show {
