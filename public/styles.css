@@ -1091,12 +1091,31 @@ body {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+  /* No focus stroke for cleaner look */
 }
 
 .form-group input[type="text"]::placeholder,
 .form-group input[type="email"]::placeholder {
   color: var(--color-gray-400);
+}
+
+/* Fix autocomplete styling to maintain dark theme */
+.form-group input[type="text"]:-webkit-autofill,
+.form-group input[type="email"]:-webkit-autofill,
+.form-group input[type="text"]:-webkit-autofill:hover,
+.form-group input[type="email"]:-webkit-autofill:hover,
+.form-group input[type="text"]:-webkit-autofill:focus,
+.form-group input[type="email"]:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-gray-800) inset !important;
+  -webkit-text-fill-color: var(--color-white) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Firefox autocomplete */
+.form-group input[type="text"]:-moz-autofill,
+.form-group input[type="email"]:-moz-autofill {
+  background-color: var(--color-gray-800) !important;
+  color: var(--color-white) !important;
 }
 
 /* App Search Container */
