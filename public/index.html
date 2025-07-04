@@ -542,14 +542,14 @@
                 
                 clearTimeout(searchTimeout);
                 
-                if (query.length < 2) {
+                if (query.length < 3) {
                     hideDropdown();
                     return;
                 }
                 
                 searchTimeout = setTimeout(() => {
                     searchApps(query);
-                }, 300);
+                }, 1000);
             });
             
             async function searchApps(query) {
