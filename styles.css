@@ -675,6 +675,10 @@ body {
   .feature-list li {
     font-size: var(--font-sm);
   }
+  
+  .feature-content {
+    gap: var(--space-6);
+  }
 }
 
 @media (min-width: 640px) {
@@ -866,17 +870,7 @@ body {
   overflow: hidden;
 }
 
-.preview-image::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 30%, transparent 60%);
-  pointer-events: none;
-  z-index: 1;
-}
+
 
 .report-preview-img {
   width: 100%;
@@ -894,14 +888,14 @@ body {
 
 /* View Full Report Button */
 .view-full-report-btn {
-  position: absolute;
-  bottom: var(--space-6);
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  margin: var(--space-8) auto 0 auto;
+  width: 75%;
+  max-width: 750px;
   background-color: var(--color-black);
   color: var(--color-white);
   border: none;
-  padding: var(--space-3) var(--space-10);
+  padding: var(--space-2) var(--space-4);
   font-size: var(--font-sm);
   font-weight: var(--font-medium);
   border-radius: 2rem;
@@ -909,16 +903,11 @@ body {
   transition: all var(--transition-base) var(--easing-ease-out);
   font-family: var(--font-primary);
   opacity: 1;
-  z-index: 2;
-}
-
-.preview-image:hover .view-full-report-btn {
-  transform: translateX(-50%) translateY(-2px);
 }
 
 .view-full-report-btn:hover {
   background-color: var(--color-gray-900);
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateY(-2px);
 }
 
 /* Sample Reports Responsive */
@@ -949,24 +938,22 @@ body {
   }
   
   .view-full-report-btn {
-    position: absolute;
-    bottom: var(--space-4);
-    left: 50%;
-    transform: translateX(-50%);
+    display: block;
+    margin: var(--space-6) auto 0 auto;
+    width: 75%;
+    max-width: none;
     opacity: 1;
-    margin: 0;
-    width: auto;
     font-size: var(--font-xs);
-    padding: var(--space-2) var(--space-6);
+    padding: var(--space-2) var(--space-4);
   }
 }
 
 @media (min-width: 641px) and (max-width: 1023px) {
   .view-full-report-btn {
-    bottom: var(--space-4);
-    left: 50%;
+    margin: var(--space-6) auto 0 auto;
+    width: 75%;
+    max-width: 525px;
     opacity: 1;
-    transform: translateX(-50%);
   }
 }
 
@@ -974,6 +961,12 @@ body {
   .report-preview-container {
     max-width: 700px;
     padding: var(--space-10) var(--space-10) 0 var(--space-10);
+  }
+  
+  .view-full-report-btn {
+    margin: var(--space-5) auto 0 auto;
+    width: 75%;
+    max-width: 525px;
   }
 }
 

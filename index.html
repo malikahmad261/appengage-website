@@ -267,34 +267,33 @@
             
             <!-- Report Preview Area -->
             <div class="report-preview-container">
-                <div class="report-preview active" id="preview-fintech">
+                <div class="report-preview active" id="preview-fintech" data-file="venmo_analysis_report.html">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="fintech" data-file="venmo_analysis_report.html">View Full Report</button>
                         <img src="images/venmo-report.png" alt="Venmo App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
-                <div class="report-preview" id="preview-ecommerce">
+                <div class="report-preview" id="preview-ecommerce" data-file="amazon_analysis_report.html">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="ecommerce" data-file="amazon_analysis_report.html">View Full Report</button>
                         <img src="images/amazon-report.png" alt="Amazon App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
-                <div class="report-preview" id="preview-streaming">
+                <div class="report-preview" id="preview-streaming" data-file="netflix_analysis_report.html">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="streaming" data-file="netflix_analysis_report.html">View Full Report</button>
                         <img src="images/netflix-report.png" alt="Netflix App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
                 
-                <div class="report-preview" id="preview-gaming">
+                <div class="report-preview" id="preview-gaming" data-file="minecraft_analysis_report.html">
                     <div class="preview-image">
-                        <button class="view-full-report-btn" data-category="gaming" data-file="minecraft_analysis_report.html">View Full Report</button>
                         <img src="images/minecraft-report.png" alt="Minecraft App Analysis Report" class="report-preview-img">
                     </div>
                 </div>
             </div>
+            
+            <!-- View Full Report Button (outside container) -->
+            <button class="view-full-report-btn" data-file="venmo_analysis_report.html">View Full Report</button>
         </div>
     </section>
 
@@ -486,6 +485,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const reportPills = document.querySelectorAll('.report-pill');
             const reportPreviews = document.querySelectorAll('.report-preview');
+            const viewReportBtn = document.querySelector('.view-full-report-btn');
             
             reportPills.forEach(pill => {
                 pill.addEventListener('click', function() {
@@ -495,26 +495,30 @@
                     reportPills.forEach(p => p.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Update active preview
+                    // Update active preview and button data
                     reportPreviews.forEach(preview => {
                         preview.classList.remove('active');
                         if (preview.id === `preview-${reportType}`) {
                             preview.classList.add('active');
+                            // Update button data-file to match active preview
+                            const reportFile = preview.getAttribute('data-file');
+                            if (viewReportBtn && reportFile) {
+                                viewReportBtn.setAttribute('data-file', reportFile);
+                            }
                         }
                     });
                 });
             });
             
-            // View full report buttons
-            const viewReportBtns = document.querySelectorAll('.view-full-report-btn');
-            viewReportBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+            // View full report button
+            if (viewReportBtn) {
+                viewReportBtn.addEventListener('click', function() {
                     const reportFile = this.getAttribute('data-file');
                     if (reportFile) {
                         window.location.href = `sample-reports/${reportFile}`;
                     }
                 });
-            });
+            }
         });
 
         // App search functionality
