@@ -524,6 +524,7 @@
         // App search functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('app-search');
+            const searchContainer = document.querySelector('.app-search-container');
             const searchDropdown = document.getElementById('search-dropdown');
             const searchLoading = document.getElementById('search-loading');
             const selectedAppContainer = document.getElementById('selected-app');
@@ -596,13 +597,14 @@
             
             function selectApp(app) {
                 selectedApp = app;
-                searchInput.value = app.title;
                 selectedAppUrl.value = app.url;
                 
                 document.getElementById('selected-app-icon').src = app.icon;
                 document.getElementById('selected-app-name').textContent = app.title;
                 document.getElementById('selected-app-developer').textContent = app.developer;
                 
+                // Hide search container and show selected app
+                searchContainer.style.display = 'none';
                 selectedAppContainer.style.display = 'flex';
                 hideDropdown();
             }
@@ -612,7 +614,10 @@
                     selectedApp = null;
                     searchInput.value = '';
                     selectedAppUrl.value = '';
+                    
+                    // Hide selected app and show search container
                     selectedAppContainer.style.display = 'none';
+                    searchContainer.style.display = 'block';
                     searchInput.focus();
                 });
             }
@@ -687,7 +692,11 @@
                         if (result.success) {
                             showSuccessOverlay();
                             form.reset();
-                            document.getElementById('selected-app').style.display = 'none';
+                            // Reset app selection UI
+                            const selectedApp = document.getElementById('selected-app');
+                            const searchContainer = document.querySelector('.app-search-container');
+                            selectedApp.style.display = 'none';
+                            searchContainer.style.display = 'block';
                         } else {
                             alert(result.message || 'There was an error submitting your request. Please try again.');
                         }
