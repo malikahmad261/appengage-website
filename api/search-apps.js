@@ -66,8 +66,7 @@ export default async function handler(req, res) {
         // Process results from Google Play Store API
         let playStoreResults = [];
 
-        // Handle app_highlight (featured app result) - DISABLED
-        /*
+        // Handle app_highlight (featured app result)
         if (data.app_highlight) {
             const app = data.app_highlight;
             playStoreResults.push({
@@ -82,29 +81,24 @@ export default async function handler(req, res) {
                 featured: true
             });
         }
-        */
 
         // Handle organic_results (regular app search results)
         if (data.organic_results && Array.isArray(data.organic_results)) {
-            const appList = data.organic_results.find(result => result.type === 'app_list' && result.items);
+            const organicApps = data.organic_results.map(app => {
+                return {
+                    title: app.title || 'Unknown App',
+                    developer: app.author || 'Unknown Developer', 
+                    url: app.link || '',
+                    icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
+                    snippet: app.description?.substring(0, 150) + '...' || '',
+                    rating: app.rating || null,
+                    reviews: app.reviews || null,
+                    downloads: app.downloads || null,
+                    featured: false
+                };
+            }).filter(app => app.title && app.title !== 'Unknown App');
 
-            if (appList) {
-                const organicApps = appList.items.map(app => {
-                    return {
-                        title: app.title || 'Unknown App',
-                        developer: app.author || 'Unknown Developer', 
-                        url: app.link || '',
-                        icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
-                        snippet: app.description?.substring(0, 150) + '...' || '',
-                        rating: app.rating || null,
-                        reviews: app.reviews || null,
-                        downloads: app.downloads || null,
-                        featured: false
-                    };
-                }).filter(app => app.title && app.title !== 'Unknown App');
-
-                playStoreResults = playStoreResults.concat(organicApps);
-            }
+            playStoreResults = playStoreResults.concat(organicApps);
         }
 
         // Remove duplicates and limit results

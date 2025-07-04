@@ -524,7 +524,6 @@
         // App search functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('app-search');
-            const searchContainer = document.querySelector('.app-search-container');
             const searchDropdown = document.getElementById('search-dropdown');
             const searchLoading = document.getElementById('search-loading');
             const selectedAppContainer = document.getElementById('selected-app');
@@ -554,23 +553,17 @@
             
             async function searchApps(query) {
                 try {
-                    console.log('Starting search for:', query);
                     showLoading();
                     hideDropdown();
                     
-                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
-                    console.log('API response status:', response.status);
-                    
-                    const data = await response.json();
-                    console.log('API response data:', data);
+                                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
                     
                     hideLoading();
                     
                     if (data.success && data.apps && data.apps.length > 0) {
-                        console.log('Displaying results:', data.apps.length, 'apps');
                         displayResults(data.apps);
                     } else {
-                        console.log('No results found, showing no results message');
                         showNoResults();
                     }
                 } catch (error) {
@@ -581,36 +574,16 @@
             }
             
             function displayResults(apps) {
-                console.log('displayResults called with:', apps);
-                
-                if (!searchDropdown) {
-                    console.error('searchDropdown element not found!');
-                    return;
-                }
-                
                 searchDropdown.innerHTML = '';
                 
-                if (!apps || !Array.isArray(apps) || apps.length === 0) {
-                    console.log('No valid apps array provided');
-                    showNoResults();
-                    return;
-                }
-                
-                apps.forEach((app, index) => {
-                    console.log(`Creating item ${index + 1}:`, app.title);
-                    
-                    // Ensure app has required fields
-                    const title = app.title || 'Unknown App';
-                    const developer = app.developer || 'Unknown Developer';
-                    const icon = app.icon || `https://via.placeholder.com/32x32/4285f4/white?text=${title.charAt(0)}`;
-                    
+                apps.forEach(app => {
                     const item = document.createElement('div');
                     item.className = 'dropdown-item';
                     item.innerHTML = `
-                        <img src="${icon}" alt="${title}" class="dropdown-app-icon" loading="lazy" onerror="this.src='https://via.placeholder.com/32x32/4285f4/white?text=${title.charAt(0)}'">
+                        <img src="${app.icon}" alt="${app.title}" class="dropdown-app-icon" loading="lazy">
                         <div class="dropdown-app-details">
-                            <span class="dropdown-app-name">${title}</span>
-                            <span class="dropdown-app-developer">${developer}</span>
+                            <span class="dropdown-app-name">${app.title}</span>
+                            <span class="dropdown-app-developer">${app.developer}</span>
                         </div>
                     `;
                     
@@ -618,39 +591,19 @@
                     searchDropdown.appendChild(item);
                 });
                 
-                console.log('Dropdown HTML after adding items:', searchDropdown.innerHTML.substring(0, 200) + '...');
-                console.log('Calling showDropdown()');
                 showDropdown();
             }
             
             function selectApp(app) {
-                console.log('selectApp called with:', app);
                 selectedApp = app;
+                searchInput.value = app.title;
+                selectedAppUrl.value = app.url;
                 
-                if (selectedAppUrl) {
-                    selectedAppUrl.value = app.url || '';
-                }
+                document.getElementById('selected-app-icon').src = app.icon;
+                document.getElementById('selected-app-name').textContent = app.title;
+                document.getElementById('selected-app-developer').textContent = app.developer;
                 
-                const selectedAppIcon = document.getElementById('selected-app-icon');
-                const selectedAppName = document.getElementById('selected-app-name'); 
-                const selectedAppDeveloper = document.getElementById('selected-app-developer');
-                
-                if (selectedAppIcon) {
-                    selectedAppIcon.src = app.icon || `https://via.placeholder.com/32x32/4285f4/white?text=${(app.title || 'A').charAt(0)}`;
-                }
-                if (selectedAppName) {
-                    selectedAppName.textContent = app.title || 'Unknown App';
-                }
-                if (selectedAppDeveloper) {
-                    selectedAppDeveloper.textContent = app.developer || 'Unknown Developer';
-                }
-                
-                if (searchContainer) {
-                    searchContainer.style.display = 'none';
-                }
-                if (selectedAppContainer) {
-                    selectedAppContainer.style.display = 'flex';
-                }
+                selectedAppContainer.style.display = 'flex';
                 hideDropdown();
             }
             
@@ -660,7 +613,6 @@
                     searchInput.value = '';
                     selectedAppUrl.value = '';
                     selectedAppContainer.style.display = 'none';
-                    searchContainer.style.display = 'block';
                     searchInput.focus();
                 });
             }
@@ -674,12 +626,7 @@
             }
             
             function showDropdown() {
-                console.log('showDropdown called');
-                console.log('searchDropdown element:', searchDropdown);
-                console.log('searchDropdown classes before:', searchDropdown.className);
                 searchDropdown.classList.add('show');
-                console.log('searchDropdown classes after:', searchDropdown.className);
-                console.log('searchDropdown computed style display:', window.getComputedStyle(searchDropdown).display);
             }
             
             function hideDropdown() {
@@ -702,16 +649,6 @@
                     hideDropdown();
                 }
             });
-            
-            // Test function - call this from browser console to test dropdown
-            window.testSearchDropdown = function() {
-                console.log('Testing search dropdown...');
-                const testApps = [
-                    { title: 'WhatsApp Messenger', developer: 'WhatsApp LLC', url: 'https://play.google.com/store/apps/details?id=com.whatsapp', icon: 'https://via.placeholder.com/32x32/25D366/white?text=W' },
-                    { title: 'Instagram', developer: 'Instagram', url: 'https://play.google.com/store/apps/details?id=com.instagram.android', icon: 'https://via.placeholder.com/32x32/E4405F/white?text=I' }
-                ];
-                displayResults(testApps);
-            };
         });
 
         // Form submission
