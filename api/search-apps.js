@@ -45,9 +45,7 @@ export default async function handler(req, res) {
             engine: 'google_play',
             q: query,
             store: 'apps',
-            api_key: SERP_API_KEY,
-            gl: 'us',
-            hl: 'en'
+            api_key: SERP_API_KEY
         });
 
         // Call SERP API
