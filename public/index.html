@@ -524,6 +524,7 @@
         // App search functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('app-search');
+            const searchContainer = document.querySelector('.app-search-container');
             const searchDropdown = document.getElementById('search-dropdown');
             const searchLoading = document.getElementById('search-loading');
             const selectedAppContainer = document.getElementById('selected-app');
@@ -556,8 +557,8 @@
                     showLoading();
                     hideDropdown();
                     
-                                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
-                const data = await response.json();
+                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
+                    const data = await response.json();
                     
                     hideLoading();
                     
@@ -596,13 +597,13 @@
             
             function selectApp(app) {
                 selectedApp = app;
-                searchInput.value = app.title;
                 selectedAppUrl.value = app.url;
                 
                 document.getElementById('selected-app-icon').src = app.icon;
                 document.getElementById('selected-app-name').textContent = app.title;
                 document.getElementById('selected-app-developer').textContent = app.developer;
                 
+                searchContainer.style.display = 'none';
                 selectedAppContainer.style.display = 'flex';
                 hideDropdown();
             }
@@ -613,6 +614,7 @@
                     searchInput.value = '';
                     selectedAppUrl.value = '';
                     selectedAppContainer.style.display = 'none';
+                    searchContainer.style.display = 'block';
                     searchInput.focus();
                 });
             }

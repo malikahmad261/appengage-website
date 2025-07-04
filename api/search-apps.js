@@ -66,7 +66,8 @@ export default async function handler(req, res) {
         // Process results from Google Play Store API
         let playStoreResults = [];
 
-        // Handle app_highlight (featured app result)
+        // Handle app_highlight (featured app result) - DISABLED
+        /*
         if (data.app_highlight) {
             const app = data.app_highlight;
             playStoreResults.push({
@@ -81,6 +82,7 @@ export default async function handler(req, res) {
                 featured: true
             });
         }
+        */
 
         // Handle organic_results (regular app search results)
         if (data.organic_results && Array.isArray(data.organic_results)) {
