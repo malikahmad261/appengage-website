@@ -86,21 +86,25 @@ export default async function handler(req, res) {
 
         // Handle organic_results (regular app search results)
         if (data.organic_results && Array.isArray(data.organic_results)) {
-            const organicApps = data.organic_results.map(app => {
-                return {
-                    title: app.title || 'Unknown App',
-                    developer: app.author || 'Unknown Developer', 
-                    url: app.link || '',
-                    icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
-                    snippet: app.description?.substring(0, 150) + '...' || '',
-                    rating: app.rating || null,
-                    reviews: app.reviews || null,
-                    downloads: app.downloads || null,
-                    featured: false
-                };
-            }).filter(app => app.title && app.title !== 'Unknown App');
+            const appList = data.organic_results.find(result => result.type === 'app_list' && result.items);
 
-            playStoreResults = playStoreResults.concat(organicApps);
+            if (appList) {
+                const organicApps = appList.items.map(app => {
+                    return {
+                        title: app.title || 'Unknown App',
+                        developer: app.author || 'Unknown Developer', 
+                        url: app.link || '',
+                        icon: app.thumbnail || `https://via.placeholder.com/64x64/4285f4/white?text=${(app.title || 'A').charAt(0)}`,
+                        snippet: app.description?.substring(0, 150) + '...' || '',
+                        rating: app.rating || null,
+                        reviews: app.reviews || null,
+                        downloads: app.downloads || null,
+                        featured: false
+                    };
+                }).filter(app => app.title && app.title !== 'Unknown App');
+
+                playStoreResults = playStoreResults.concat(organicApps);
+            }
         }
 
         // Remove duplicates and limit results
