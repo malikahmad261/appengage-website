@@ -62,6 +62,7 @@ export default async function handler(req, res) {
         
         const data = await response.json();
         console.log('Successfully received data from SerpApi.');
+        console.log('Raw SerpApi response:', JSON.stringify(data, null, 2));
 
         // Process results from Google Play Store API
         let playStoreResults = [];
@@ -109,6 +110,7 @@ export default async function handler(req, res) {
             .slice(0, 8);
 
         console.log(`Found ${uniqueResults.length} unique results.`);
+        console.log('Final results being sent to frontend:', JSON.stringify(uniqueResults, null, 2));
 
         if (uniqueResults.length > 0) {
             res.status(200).json({ 

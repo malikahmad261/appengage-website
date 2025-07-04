@@ -560,11 +560,15 @@
                                     const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
                 const data = await response.json();
                     
+                    console.log('Raw API response for query "' + query + '":', data);
+                    
                     hideLoading();
                     
                     if (data.success && data.apps && data.apps.length > 0) {
+                        console.log('Apps received from API:', data.apps.length, data.apps);
                         displayResults(data.apps);
                     } else {
+                        console.log('No apps received from API');
                         showNoResults();
                     }
                 } catch (error) {
@@ -577,14 +581,24 @@
             function displayResults(apps) {
                 searchDropdown.innerHTML = '';
                 
+                console.log('Apps before filtering:', apps.length, apps);
+                
                 // Filter out "Similar apps" entries and other unwanted results
                 const filteredApps = apps.filter(app => {
-                    return !(
+                    const shouldFilter = (
                         app.title.toLowerCase().includes('similar apps') ||
                         app.developer.toLowerCase().includes('unknown developer') ||
                         app.title.toLowerCase() === 'similar apps'
                     );
+                    
+                    if (shouldFilter) {
+                        console.log('Filtering out app:', app.title, 'by', app.developer);
+                    }
+                    
+                    return !shouldFilter;
                 });
+                
+                console.log('Apps after filtering:', filteredApps.length, filteredApps);
                 
                 filteredApps.forEach(app => {
                     const item = document.createElement('div');
