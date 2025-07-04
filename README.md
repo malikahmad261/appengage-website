@@ -103,4 +103,4 @@ Searches Google Play Store for apps using SerpApi.
 
 ## License
 
-MIT License - see LICENSE file for details. 
+MIT License - see LICENSE file for details. Updated: Fri Jul  4 15:18:46 PKT 2025
