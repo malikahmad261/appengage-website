@@ -671,10 +671,12 @@
             
             function showDropdown() {
                 searchDropdown.classList.add('show');
+                searchContainer.classList.add('dropdown-active');
             }
             
             function hideDropdown() {
                 searchDropdown.classList.remove('show');
+                searchContainer.classList.remove('dropdown-active');
             }
             
             function showNoResults() {

@@ -1104,6 +1104,11 @@ body {
   position: relative;
 }
 
+/* Modify search input border-radius when dropdown is active */
+.app-search-container.dropdown-active input[type="text"] {
+  border-radius: var(--space-2) var(--space-2) 0 0;
+}
+
 .search-dropdown {
   position: absolute;
   top: 100%;
