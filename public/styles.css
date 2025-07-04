@@ -1109,15 +1109,16 @@ body {
   top: 100%;
   left: 0;
   right: 0;
-  background: var(--color-gray-800);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(45, 45, 45, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-top: none;
-  border-radius: 0 0 var(--space-2) var(--space-2);
-  max-height: 200px;
+  border-radius: 0 0 var(--space-3) var(--space-3);
+  max-height: 280px;
   overflow-y: auto;
   z-index: 10;
   display: none;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .search-dropdown.show {
@@ -1126,18 +1127,36 @@ body {
   opacity: 1;
 }
 
+/* Custom scrollbar for dropdown */
+.search-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .dropdown-item {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-4) var(--space-4);
   cursor: pointer;
-  border-bottom: 1px solid var(--color-gray-700);
-  transition: background-color var(--transition-fast) var(--easing-ease-out);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all var(--transition-fast) var(--easing-ease-out);
   display: flex;
   align-items: center;
   gap: var(--space-3);
 }
 
 .dropdown-item:hover {
-  background-color: var(--color-gray-700);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .dropdown-item:last-child {
@@ -1145,26 +1164,38 @@ body {
 }
 
 .dropdown-app-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--space-1);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--space-2);
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .dropdown-app-details {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .dropdown-app-name {
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold);
   color: var(--color-white);
   display: block;
-  font-size: var(--font-sm);
+  font-size: var(--font-base);
+  line-height: 1.3;
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dropdown-app-developer {
-  color: var(--color-gray-400);
+  color: var(--color-gray-300);
   font-size: var(--font-xs);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Search Loading */

@@ -601,13 +601,29 @@
                 console.log('Apps after filtering:', filteredApps.length, filteredApps);
                 
                 filteredApps.forEach(app => {
+                    // Clean up developer name to avoid redundancy
+                    let cleanDeveloper = app.developer;
+                    
+                    // If developer name is the same as or contained in app title, use a generic label
+                    if (cleanDeveloper.toLowerCase() === app.title.toLowerCase() || 
+                        app.title.toLowerCase().includes(cleanDeveloper.toLowerCase()) ||
+                        cleanDeveloper.toLowerCase().includes(app.title.toLowerCase())) {
+                        cleanDeveloper = 'Official App';
+                    }
+                    
+                    // Clean up common company suffixes for better readability
+                    cleanDeveloper = cleanDeveloper
+                        .replace(/\s+(LLC|Inc\.?|Corporation|Corp\.?|Ltd\.?|Limited)$/i, '')
+                        .replace(/\s+(Platforms,?\s*Inc\.?|Mobile)$/i, '')
+                        .trim();
+                    
                     const item = document.createElement('div');
                     item.className = 'dropdown-item';
                     item.innerHTML = `
                         <img src="${app.icon}" alt="${app.title}" class="dropdown-app-icon" loading="lazy">
                         <div class="dropdown-app-details">
                             <span class="dropdown-app-name">${app.title}</span>
-                            <span class="dropdown-app-developer">${app.developer}</span>
+                            <span class="dropdown-app-developer">${cleanDeveloper}</span>
                         </div>
                     `;
                     
