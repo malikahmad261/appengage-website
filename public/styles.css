@@ -1079,7 +1079,7 @@ body {
 .form-group input[type="email"] {
   width: 100%;
   padding: var(--space-4);
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--space-2);
   font-size: var(--font-base);
   font-family: var(--font-primary);
@@ -1091,7 +1091,7 @@ body {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus {
-  /* No focus stroke for cleaner look */
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .form-group input[type="text"]::placeholder,
