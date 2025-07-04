@@ -577,7 +577,16 @@
             function displayResults(apps) {
                 searchDropdown.innerHTML = '';
                 
-                apps.forEach(app => {
+                // Filter out "Similar apps" entries and other unwanted results
+                const filteredApps = apps.filter(app => {
+                    return !(
+                        app.title.toLowerCase().includes('similar apps') ||
+                        app.developer.toLowerCase().includes('unknown developer') ||
+                        app.title.toLowerCase() === 'similar apps'
+                    );
+                });
+                
+                filteredApps.forEach(app => {
                     const item = document.createElement('div');
                     item.className = 'dropdown-item';
                     item.innerHTML = `
