@@ -32,23 +32,20 @@ export default async function handler(req, res) {
         const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
         
         if (!N8N_WEBHOOK_URL) {
-            console.error('❌ N8N_WEBHOOK_URL environment variable not set in Vercel');
-            console.error('Please add N8N_WEBHOOK_URL to Vercel Environment Variables');
+            console.error('N8N_WEBHOOK_URL environment variable not set');
             return res.status(500).json({ 
                 success: false,
                 message: 'Webhook not configured. Please contact support or check back in a few minutes.' 
             });
         }
 
-        // Prepare data for n8n webhook in the EXACT format specified
+        // Prepare data for n8n webhook
         const webhookData = JSON.stringify({
             email: email,
             googlePlayUrl: playstore_url,
             timestamp: new Date().toISOString(),
             source: 'https://www.appengage.io/'
         });
-
-        console.log('Sending webhook data to n8n:', webhookData);
 
         // Send data to n8n webhook
         const webhookResponse = await fetch(N8N_WEBHOOK_URL, {
@@ -62,14 +59,9 @@ export default async function handler(req, res) {
 
         if (!webhookResponse.ok) {
             const errorText = await webhookResponse.text();
-            console.error('❌ Webhook error response:', errorText);
-            console.error('❌ Status:', webhookResponse.status, webhookResponse.statusText);
-            throw new Error(`Webhook failed: ${webhookResponse.status} ${webhookResponse.statusText}`);
+            console.error('Webhook error:', webhookResponse.status, errorText);
+            throw new Error(`Webhook failed: ${webhookResponse.status}`);
         }
-
-        console.log('✅ Webhook sent successfully to n8n');
-        console.log('📧 Email:', email);
-        console.log('📱 App URL:', playstore_url);
 
         // Return success response
         return res.status(200).json({ 
@@ -78,7 +70,7 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('❌ Form submission error:', error);
+        console.error('Form submission error:', error.message);
         
         // Return error response
         return res.status(500).json({ 

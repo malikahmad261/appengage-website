@@ -410,7 +410,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 AppEngage. Designed by engageneers</p>
+                <p>© 2025 AppEngage.</p>
             </div>
         </div>
     </footer>
@@ -443,7 +443,6 @@
                 const poweredByRect = poweredByElement.getBoundingClientRect();
                 const headerHeight = header.offsetHeight;
                 
-                // Show shadow when the header passes the powered-by element
                 if (poweredByRect.bottom <= headerHeight) {
                     header.classList.add('scrolled');
                 } else {
@@ -451,10 +450,7 @@
                 }
             }
             
-            // Initial check
             handleScroll();
-            
-            // Listen for scroll events
             window.addEventListener('scroll', handleScroll, { passive: true });
         });
 
@@ -468,7 +464,6 @@
                     mobileNav.classList.toggle('active');
                 });
                 
-                // Close mobile menu when clicking on links
                 const mobileNavLinks = mobileNav.querySelectorAll('a');
                 mobileNavLinks.forEach(link => {
                     link.addEventListener('click', function() {
@@ -476,7 +471,6 @@
                     });
                 });
                 
-                // Close mobile menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!hamburgerMenu.contains(e.target) && !mobileNav.contains(e.target)) {
                         mobileNav.classList.remove('active');
@@ -495,16 +489,13 @@
                 pill.addEventListener('click', function() {
                     const reportType = this.getAttribute('data-report');
                     
-                    // Update active pill
                     reportPills.forEach(p => p.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Update active preview and button data
                     reportPreviews.forEach(preview => {
                         preview.classList.remove('active');
                         if (preview.id === `preview-${reportType}`) {
                             preview.classList.add('active');
-                            // Update button data-file to match active preview
                             const reportFile = preview.getAttribute('data-file');
                             if (viewReportBtn && reportFile) {
                                 viewReportBtn.setAttribute('data-file', reportFile);
@@ -514,7 +505,6 @@
                 });
             });
             
-            // View full report button
             if (viewReportBtn) {
                 viewReportBtn.addEventListener('click', function() {
                     const reportFile = this.getAttribute('data-file');
@@ -540,7 +530,6 @@
             
             if (!searchInput) return;
             
-            // Search functionality
             searchInput.addEventListener('input', function() {
                 const query = this.value.trim();
                 
@@ -561,76 +550,14 @@
                     showLoading();
                     hideDropdown();
                     
-                    // ============= START LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
-                    // Hardcoded results for local testing when API is not available
-                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                        console.log('LOCAL TESTING: Using hardcoded results for query:', query);
-                        
-                        // Simulate API delay
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                        
-                        hideLoading();
-                        
-                        // Hardcoded easypaisa and related results for testing
-                        const hardcodedApps = [
-                            {
-                                title: 'Easypaisa',
-                                developer: 'Telenor Microfinance Bank',
-                                icon: 'https://play-lh.googleusercontent.com/XKlDNKqfAFjz5fYhlaQjQVWUF-HEkHhpQ2VGOPyc8FsJ2tBxJqO3Vl8QjP7RjX4O5w=s96-rw',
-                                url: 'https://play.google.com/store/apps/details?id=pk.com.telenor.phoenix',
-                                rating: 4.3,
-                                reviews: '50K+',
-                                downloads: '10M+'
-                            },
-                            {
-                                title: 'JazzCash',
-                                developer: 'Mobilink Microfinance Bank',
-                                icon: 'https://play-lh.googleusercontent.com/K7C9A6KlPWxlVYtCcQGCbfZhE7HYtqBFjf3WzQv8JjVxQw_nJZGjPqKlB2-nKfZB6Q=s96-rw',
-                                url: 'https://play.google.com/store/apps/details?id=com.techlogix.mobilinkcustomer',
-                                rating: 4.1,
-                                reviews: '45K+',
-                                downloads: '5M+'
-                            },
-                            {
-                                title: 'SadaPay',
-                                developer: 'SadaPay Limited',
-                                icon: 'https://play-lh.googleusercontent.com/VqRjC5c9F8HzWfYKbZvQzJjQzfQzVzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzG=s96-rw',
-                                url: 'https://play.google.com/store/apps/details?id=com.sadapay.app',
-                                rating: 4.5,
-                                reviews: '12K+',
-                                downloads: '1M+'
-                            }
-                        ];
-                        
-                        // Filter results based on query
-                        const filteredApps = hardcodedApps.filter(app => 
-                            app.title.toLowerCase().includes(query.toLowerCase()) ||
-                            app.developer.toLowerCase().includes(query.toLowerCase())
-                        );
-                        
-                        if (filteredApps.length > 0) {
-                            console.log('LOCAL TESTING: Showing hardcoded results:', filteredApps);
-                            displayResults(filteredApps);
-                        } else {
-                            console.log('LOCAL TESTING: No matching hardcoded results');
-                            showNoResults();
-                        }
-                        return;
-                    }
-                    // ============= END LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
-                    
-                                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
-                const data = await response.json();
-                    
-                    console.log('Raw API response for query "' + query + '":', data);
+                    const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
+                    const data = await response.json();
                     
                     hideLoading();
                     
                     if (data.success && data.apps && data.apps.length > 0) {
-                        console.log('Apps received from API:', data.apps.length, data.apps);
                         displayResults(data.apps);
                     } else {
-                        console.log('No apps received from API');
                         showNoResults();
                     }
                 } catch (error) {
@@ -643,37 +570,23 @@
             function displayResults(apps) {
                 searchDropdown.innerHTML = '';
                 
-                console.log('Apps before filtering:', apps.length, apps);
-                
-                // Filter out "Similar apps" entries and other unwanted results
                 const filteredApps = apps.filter(app => {
-                    const shouldFilter = (
+                    return !(
                         app.title.toLowerCase().includes('similar apps') ||
                         app.developer.toLowerCase().includes('unknown developer') ||
                         app.title.toLowerCase() === 'similar apps'
                     );
-                    
-                    if (shouldFilter) {
-                        console.log('Filtering out app:', app.title, 'by', app.developer);
-                    }
-                    
-                    return !shouldFilter;
                 });
                 
-                console.log('Apps after filtering:', filteredApps.length, filteredApps);
-                
                 filteredApps.forEach(app => {
-                    // Clean up developer name to avoid redundancy
                     let cleanDeveloper = app.developer;
                     
-                    // If developer name is the same as or contained in app title, use a generic label
                     if (cleanDeveloper.toLowerCase() === app.title.toLowerCase() || 
                         app.title.toLowerCase().includes(cleanDeveloper.toLowerCase()) ||
                         cleanDeveloper.toLowerCase().includes(app.title.toLowerCase())) {
                         cleanDeveloper = 'Official App';
                     }
                     
-                    // Clean up common company suffixes for better readability
                     cleanDeveloper = cleanDeveloper
                         .replace(/\s+(LLC|Inc\.?|Corporation|Corp\.?|Ltd\.?|Limited)$/i, '')
                         .replace(/\s+(Platforms,?\s*Inc\.?|Mobile)$/i, '')
@@ -704,12 +617,10 @@
                 document.getElementById('selected-app-name').textContent = app.title;
                 document.getElementById('selected-app-developer').textContent = app.developer;
                 
-                // Hide search container and show selected app
                 searchContainer.style.display = 'none';
                 selectedAppContainer.style.display = 'flex';
                 hideDropdown();
                 
-                // Trigger appSelected event for validation
                 document.dispatchEvent(new CustomEvent('appSelected', { detail: app }));
             }
             
@@ -719,12 +630,10 @@
                     searchInput.value = '';
                     selectedAppUrl.value = '';
                     
-                    // Hide selected app and show search container
                     selectedAppContainer.style.display = 'none';
                     searchContainer.style.display = 'block';
                     searchInput.focus();
                     
-                    // Clear app validation state
                     clearFieldError('app');
                 });
             }
@@ -757,7 +666,6 @@
                 showDropdown();
             }
             
-            // Hide dropdown when clicking outside
             document.addEventListener('click', function(e) {
                 if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
                     hideDropdown();
@@ -772,7 +680,6 @@
             const successCloseBtn = document.getElementById('success-close-btn');
             const emailInput = document.getElementById('email');
             
-            // Real-time email validation
             if (emailInput) {
                 emailInput.addEventListener('blur', function() {
                     validateEmail();
@@ -783,7 +690,6 @@
                 });
             }
             
-            // Clear app selection error when app is selected
             document.addEventListener('appSelected', function() {
                 clearFieldError('app');
             });
@@ -792,7 +698,6 @@
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
-                    // Clear all previous errors
                     clearAllErrors();
                     
                     const formData = new FormData(this);
@@ -801,13 +706,11 @@
                     
                     let hasErrors = false;
                     
-                    // Validate app selection
                     if (!appUrl) {
                         showFieldError('app', 'Please search and select your app from the dropdown.');
                         hasErrors = true;
                     }
                     
-                    // Validate email
                     if (!email) {
                         showFieldError('email', 'Please enter your email address.');
                         hasErrors = true;
@@ -820,71 +723,12 @@
                         return;
                     }
                     
-                    // Show loading state on submit button
                     const submitBtn = form.querySelector('.submit-btn');
                     const originalText = submitBtn.textContent;
                     submitBtn.textContent = 'Sending...';
                     submitBtn.disabled = true;
                     
                     try {
-                        // ============= START LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
-                        // Dummy success and error states for local testing
-                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                            console.log('LOCAL TESTING: Simulating form submission...');
-                            
-                            // Simulate API delay
-                            await new Promise(resolve => setTimeout(resolve, 2000));
-                            
-                            // Test different scenarios based on email domain for easier testing
-                            const emailDomain = email.split('@')[1];
-                            let shouldSucceed = true;
-                            let errorMessage = '';
-                            
-                            // Test scenarios:
-                            if (emailDomain === 'error.com') {
-                                shouldSucceed = false;
-                                errorMessage = 'Server error: Unable to process your request. Please try again later.';
-                            } else if (emailDomain === 'invalid.com') {
-                                shouldSucceed = false;
-                                errorMessage = 'Invalid app URL provided. Please select a valid app from the search results.';
-                            } else if (emailDomain === 'network.com') {
-                                shouldSucceed = false;
-                                errorMessage = 'Network error. Please check your connection and try again.';
-                            } else {
-                                // 80% success rate for other emails, 20% random error
-                                shouldSucceed = Math.random() > 0.2;
-                                if (!shouldSucceed) {
-                                    const errorMessages = [
-                                        'There was an error submitting your request. Please try again.',
-                                        'Unable to analyze this app at the moment. Please try again later.',
-                                        'Service temporarily unavailable. Please try again in a few minutes.'
-                                    ];
-                                    errorMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
-                                }
-                            }
-                            
-                            console.log('LOCAL TESTING:', shouldSucceed ? 'Success scenario' : 'Error scenario', shouldSucceed ? '' : `- ${errorMessage}`);
-                            
-                            if (shouldSucceed) {
-                                showSuccessOverlay();
-                                form.reset();
-                                clearAllErrors();
-                                // Reset app selection UI
-                                const selectedApp = document.getElementById('selected-app');
-                                const searchContainer = document.querySelector('.app-search-container');
-                                selectedApp.style.display = 'none';
-                                searchContainer.style.display = 'block';
-                            } else {
-                                showFieldError('email', errorMessage);
-                            }
-                            
-                            // Reset submit button
-                            submitBtn.textContent = originalText;
-                            submitBtn.disabled = false;
-                            return;
-                        }
-                        // ============= END LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
-                        
                         const response = await fetch('/api/submit-form', {
                             method: 'POST',
                             headers: {
@@ -902,7 +746,6 @@
                             showSuccessOverlay();
                             form.reset();
                             clearAllErrors();
-                            // Reset app selection UI
                             const selectedApp = document.getElementById('selected-app');
                             const searchContainer = document.querySelector('.app-search-container');
                             selectedApp.style.display = 'none';
@@ -914,14 +757,12 @@
                         console.error('Form submission error:', error);
                         showFieldError('email', 'Network error. Please check your connection and try again.');
                     } finally {
-                        // Reset submit button
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
                     }
                 });
             }
             
-            // Validation utility functions
             function isValidEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);

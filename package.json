@@ -3,17 +3,22 @@
   "version": "1.0.0",
   "description": "AppEngage - AI-powered app review analytics website",
   "main": "public/index.html",
+  "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Static site - no build required'",
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "clean": "rm -rf node_modules package-lock.json",
+    "fresh-install": "npm run clean && npm install"
   },
   "keywords": [
     "app",
     "analytics",
     "reviews",
     "ai",
-    "insights"
+    "insights",
+    "vercel",
+    "static-site"
   ],
   "author": "AppEngage Team",
   "license": "MIT",
