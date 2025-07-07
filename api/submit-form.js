@@ -1,63 +1,74 @@
 export default async function handler(req, res) {
+    // Enable CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     // Only allow POST requests
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ 
+            success: false,
+            message: 'Method not allowed' 
+        });
     }
 
     try {
-        const { email, playstoreUrl, appName, appDeveloper, appIcon } = req.body;
+        const { email, playstore_url } = req.body;
 
         // Validate required fields
-        if (!email || !playstoreUrl) {
+        if (!email || !playstore_url) {
             return res.status(400).json({ 
-                error: 'Missing required fields: email and googlePlayUrl are required' 
+                success: false,
+                message: 'Missing required fields: email and app URL are required' 
             });
         }
 
-        // Get webhook URL from environment variables
-        const webhookUrl = process.env.N8N_WEBHOOK_URL;
+        // n8n webhook URL from environment variables
+        const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
         
-        if (!webhookUrl) {
+        if (!N8N_WEBHOOK_URL) {
             console.error('N8N_WEBHOOK_URL environment variable not set');
             return res.status(500).json({ 
-                error: 'Webhook configuration error' 
+                success: false,
+                message: 'Webhook configuration error' 
             });
         }
 
-        // Prepare data for n8n webhook - ensure proper JSON structure
-        const webhookData = {
-            body: {
-                email,
-                googlePlayUrl: playstoreUrl,
-                timestamp: new Date().toISOString(),
-                source: 'https://www.appengage.io/',
-                // Include app details if available
-                ...(appName && { appName }),
-                ...(appDeveloper && { appDeveloper }),
-                ...(appIcon && { appIcon })
-            }
-        };
+        // Prepare data for n8n webhook in the EXACT format specified
+        const webhookData = JSON.stringify({
+            email: email,
+            googlePlayUrl: playstore_url,
+            timestamp: new Date().toISOString(),
+            source: 'https://www.appengage.io/'
+        });
 
-        // Log the webhook data being sent (for debugging)
-        console.log('Sending webhook data:', JSON.stringify(webhookData, null, 2));
+        console.log('Sending webhook data to n8n:', webhookData);
 
         // Send data to n8n webhook
-        const webhookResponse = await fetch(webhookUrl, {
+        const webhookResponse = await fetch(N8N_WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'User-Agent': 'AppEngage-Website/1.0'
             },
-            body: JSON.stringify(webhookData)
+            body: webhookData
         });
 
         if (!webhookResponse.ok) {
             const errorText = await webhookResponse.text();
-            console.error('Webhook error response:', errorText);
+            console.error('❌ Webhook error response:', errorText);
+            console.error('❌ Status:', webhookResponse.status, webhookResponse.statusText);
             throw new Error(`Webhook failed: ${webhookResponse.status} ${webhookResponse.statusText}`);
         }
 
-        console.log('Webhook sent successfully');
+        console.log('✅ Webhook sent successfully to n8n');
+        console.log('📧 Email:', email);
+        console.log('📱 App URL:', playstore_url);
 
         // Return success response
         return res.status(200).json({ 
@@ -66,12 +77,12 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('Form submission error:', error);
+        console.error('❌ Form submission error:', error);
         
         // Return error response
         return res.status(500).json({ 
             success: false,
-            error: 'Failed to submit form. Please try again later.' 
+            message: 'Failed to submit form. Please try again later.' 
         });
     }
 } 

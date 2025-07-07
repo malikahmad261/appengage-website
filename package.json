@@ -2,11 +2,11 @@
   "name": "appengage-website",
   "version": "1.0.0",
   "description": "AppEngage - AI-powered app review analytics website",
-  "main": "index.html",
+  "main": "public/index.html",
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Static site - no build required'",
-    "start": "serve ."
+    "start": "vercel dev"
   },
   "keywords": [
     "app",
@@ -18,7 +18,7 @@
   "author": "AppEngage Team",
   "license": "MIT",
   "devDependencies": {
-    "serve": "^14.2.1"
+    "vercel": "^34.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -27,4 +27,4 @@
     "type": "git",
     "url": "https://github.com/malikahmad261/appengage-website.git"
   }
-} 
+}

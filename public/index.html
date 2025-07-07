@@ -342,8 +342,8 @@
                             </div>
                         </div>
                         <div class="form-container">
-                            <form class="report-form" role="form" aria-label="Request free app analysis report">
-                                <div class="form-group">
+                            <form class="report-form" role="form" aria-label="Request free app analysis report" novalidate>
+                                <div class="form-group" id="app-form-group">
                                     <label for="app-search">Search Your App</label>
                                     <div class="app-search-container">
                                         <input type="text" id="app-search" name="app-search" placeholder="Type your app name..." autocomplete="off">
@@ -364,10 +364,14 @@
                                         </div>
                                         <button type="button" class="clear-selection" id="clear-selection" aria-label="Clear app selection">×</button>
                                     </div>
+                                    <div class="error-message" id="app-error"></div>
+                                    <div class="success-message" id="app-success"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="email-form-group">
                                     <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" placeholder="Enter your email address..." required>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email address...">
+                                    <div class="error-message" id="email-error"></div>
+                                    <div class="success-message" id="email-success"></div>
                                 </div>
                                 <button type="submit" class="submit-btn">Get Free Report</button>
                             </form>
@@ -421,7 +425,7 @@
                 </svg>
             </div>
             <h2 class="success-title">Request Submitted!</h2>
-            <p class="success-message">Thank you for your submission. We're analyzing your app's reviews and will send the report to your email shortly.</p>
+            <p class="success-overlay-message">Thank you for your submission. We're analyzing your app's reviews and will send the report to your email shortly.</p>
             <p class="success-subtitle">Please check your inbox in the next 5 minutes.</p>
             <button class="success-close-btn" id="success-close-btn">Continue</button>
         </div>
@@ -557,6 +561,64 @@
                     showLoading();
                     hideDropdown();
                     
+                    // ============= START LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
+                    // Hardcoded results for local testing when API is not available
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        console.log('LOCAL TESTING: Using hardcoded results for query:', query);
+                        
+                        // Simulate API delay
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        
+                        hideLoading();
+                        
+                        // Hardcoded easypaisa and related results for testing
+                        const hardcodedApps = [
+                            {
+                                title: 'Easypaisa',
+                                developer: 'Telenor Microfinance Bank',
+                                icon: 'https://play-lh.googleusercontent.com/XKlDNKqfAFjz5fYhlaQjQVWUF-HEkHhpQ2VGOPyc8FsJ2tBxJqO3Vl8QjP7RjX4O5w=s96-rw',
+                                url: 'https://play.google.com/store/apps/details?id=pk.com.telenor.phoenix',
+                                rating: 4.3,
+                                reviews: '50K+',
+                                downloads: '10M+'
+                            },
+                            {
+                                title: 'JazzCash',
+                                developer: 'Mobilink Microfinance Bank',
+                                icon: 'https://play-lh.googleusercontent.com/K7C9A6KlPWxlVYtCcQGCbfZhE7HYtqBFjf3WzQv8JjVxQw_nJZGjPqKlB2-nKfZB6Q=s96-rw',
+                                url: 'https://play.google.com/store/apps/details?id=com.techlogix.mobilinkcustomer',
+                                rating: 4.1,
+                                reviews: '45K+',
+                                downloads: '5M+'
+                            },
+                            {
+                                title: 'SadaPay',
+                                developer: 'SadaPay Limited',
+                                icon: 'https://play-lh.googleusercontent.com/VqRjC5c9F8HzWfYKbZvQzJjQzfQzVzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzGzG=s96-rw',
+                                url: 'https://play.google.com/store/apps/details?id=com.sadapay.app',
+                                rating: 4.5,
+                                reviews: '12K+',
+                                downloads: '1M+'
+                            }
+                        ];
+                        
+                        // Filter results based on query
+                        const filteredApps = hardcodedApps.filter(app => 
+                            app.title.toLowerCase().includes(query.toLowerCase()) ||
+                            app.developer.toLowerCase().includes(query.toLowerCase())
+                        );
+                        
+                        if (filteredApps.length > 0) {
+                            console.log('LOCAL TESTING: Showing hardcoded results:', filteredApps);
+                            displayResults(filteredApps);
+                        } else {
+                            console.log('LOCAL TESTING: No matching hardcoded results');
+                            showNoResults();
+                        }
+                        return;
+                    }
+                    // ============= END LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
+                    
                                     const response = await fetch(`/api/search-apps?query=${encodeURIComponent(query)}`);
                 const data = await response.json();
                     
@@ -646,6 +708,9 @@
                 searchContainer.style.display = 'none';
                 selectedAppContainer.style.display = 'flex';
                 hideDropdown();
+                
+                // Trigger appSelected event for validation
+                document.dispatchEvent(new CustomEvent('appSelected', { detail: app }));
             }
             
             if (clearSelection) {
@@ -658,6 +723,9 @@
                     selectedAppContainer.style.display = 'none';
                     searchContainer.style.display = 'block';
                     searchInput.focus();
+                    
+                    // Clear app validation state
+                    clearFieldError('app');
                 });
             }
             
@@ -680,12 +748,12 @@
             }
             
             function showNoResults() {
-                searchDropdown.innerHTML = '<div class="dropdown-item" style="text-align: center; color: var(--color-gray-400);">No apps found. Try a different search term.</div>';
+                searchDropdown.innerHTML = '<div class="dropdown-item search-no-results-item">No apps found. Try searching with a different app name.</div>';
                 showDropdown();
             }
             
             function showError() {
-                searchDropdown.innerHTML = '<div class="dropdown-item" style="text-align: center; color: var(--color-coral);">Search error. Please try again.</div>';
+                searchDropdown.innerHTML = '<div class="dropdown-item search-error-item">Unable to search apps. Please try again.</div>';
                 showDropdown();
             }
             
@@ -697,27 +765,127 @@
             });
         });
 
-        // Form submission
+        // Form validation and submission
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('.report-form');
             const successOverlay = document.getElementById('success-overlay');
             const successCloseBtn = document.getElementById('success-close-btn');
+            const emailInput = document.getElementById('email');
+            
+            // Real-time email validation
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    validateEmail();
+                });
+                
+                emailInput.addEventListener('input', function() {
+                    clearFieldError('email');
+                });
+            }
+            
+            // Clear app selection error when app is selected
+            document.addEventListener('appSelected', function() {
+                clearFieldError('app');
+            });
             
             if (form) {
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
+                    // Clear all previous errors
+                    clearAllErrors();
+                    
                     const formData = new FormData(this);
                     const email = formData.get('email');
                     const appUrl = formData.get('playstore-url');
                     
-                    if (!email || !appUrl) {
-                        alert('Please select an app and enter your email address.');
+                    let hasErrors = false;
+                    
+                    // Validate app selection
+                    if (!appUrl) {
+                        showFieldError('app', 'Please search and select your app from the dropdown.');
+                        hasErrors = true;
+                    }
+                    
+                    // Validate email
+                    if (!email) {
+                        showFieldError('email', 'Please enter your email address.');
+                        hasErrors = true;
+                    } else if (!isValidEmail(email)) {
+                        showFieldError('email', 'Please enter a valid email address.');
+                        hasErrors = true;
+                    }
+                    
+                    if (hasErrors) {
                         return;
                     }
                     
+                    // Show loading state on submit button
+                    const submitBtn = form.querySelector('.submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+                    
                     try {
-                        const response = await fetch('/api/submit-form.js', {
+                        // ============= START LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
+                        // Dummy success and error states for local testing
+                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                            console.log('LOCAL TESTING: Simulating form submission...');
+                            
+                            // Simulate API delay
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                            
+                            // Test different scenarios based on email domain for easier testing
+                            const emailDomain = email.split('@')[1];
+                            let shouldSucceed = true;
+                            let errorMessage = '';
+                            
+                            // Test scenarios:
+                            if (emailDomain === 'error.com') {
+                                shouldSucceed = false;
+                                errorMessage = 'Server error: Unable to process your request. Please try again later.';
+                            } else if (emailDomain === 'invalid.com') {
+                                shouldSucceed = false;
+                                errorMessage = 'Invalid app URL provided. Please select a valid app from the search results.';
+                            } else if (emailDomain === 'network.com') {
+                                shouldSucceed = false;
+                                errorMessage = 'Network error. Please check your connection and try again.';
+                            } else {
+                                // 80% success rate for other emails, 20% random error
+                                shouldSucceed = Math.random() > 0.2;
+                                if (!shouldSucceed) {
+                                    const errorMessages = [
+                                        'There was an error submitting your request. Please try again.',
+                                        'Unable to analyze this app at the moment. Please try again later.',
+                                        'Service temporarily unavailable. Please try again in a few minutes.'
+                                    ];
+                                    errorMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+                                }
+                            }
+                            
+                            console.log('LOCAL TESTING:', shouldSucceed ? 'Success scenario' : 'Error scenario', shouldSucceed ? '' : `- ${errorMessage}`);
+                            
+                            if (shouldSucceed) {
+                                showSuccessOverlay();
+                                form.reset();
+                                clearAllErrors();
+                                // Reset app selection UI
+                                const selectedApp = document.getElementById('selected-app');
+                                const searchContainer = document.querySelector('.app-search-container');
+                                selectedApp.style.display = 'none';
+                                searchContainer.style.display = 'block';
+                            } else {
+                                showFieldError('email', errorMessage);
+                            }
+                            
+                            // Reset submit button
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                            return;
+                        }
+                        // ============= END LOCALHOST TESTING - REMOVE BEFORE PRODUCTION =============
+                        
+                        const response = await fetch('/api/submit-form', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -733,19 +901,89 @@
                         if (result.success) {
                             showSuccessOverlay();
                             form.reset();
+                            clearAllErrors();
                             // Reset app selection UI
                             const selectedApp = document.getElementById('selected-app');
                             const searchContainer = document.querySelector('.app-search-container');
                             selectedApp.style.display = 'none';
                             searchContainer.style.display = 'block';
                         } else {
-                            alert(result.message || 'There was an error submitting your request. Please try again.');
+                            showFieldError('email', result.message || 'There was an error submitting your request. Please try again.');
                         }
                     } catch (error) {
                         console.error('Form submission error:', error);
-                        alert('There was an error submitting your request. Please try again.');
+                        showFieldError('email', 'Network error. Please check your connection and try again.');
+                    } finally {
+                        // Reset submit button
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
                     }
                 });
+            }
+            
+            // Validation utility functions
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const email = emailInput.value.trim();
+                
+                if (!email) {
+                    showFieldError('email', 'Please enter your email address.');
+                    return false;
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Please enter a valid email address.');
+                    return false;
+                } else {
+                    clearFieldError('email');
+                    return true;
+                }
+            }
+            
+            function showFieldError(fieldType, message) {
+                const formGroup = document.getElementById(`${fieldType}-form-group`);
+                const errorElement = document.getElementById(`${fieldType}-error`);
+                const successElement = document.getElementById(`${fieldType}-success`);
+                
+                if (formGroup && errorElement) {
+                    formGroup.classList.add('error');
+                    formGroup.classList.remove('success');
+                    errorElement.textContent = message;
+                    errorElement.classList.add('show');
+                    successElement.classList.remove('show');
+                }
+            }
+            
+            function clearFieldError(fieldType) {
+                const formGroup = document.getElementById(`${fieldType}-form-group`);
+                const errorElement = document.getElementById(`${fieldType}-error`);
+                const successElement = document.getElementById(`${fieldType}-success`);
+                
+                if (formGroup && errorElement) {
+                    formGroup.classList.remove('error');
+                    errorElement.classList.remove('show');
+                    successElement.classList.remove('show');
+                }
+            }
+            
+            function showFieldSuccess(fieldType, message) {
+                const formGroup = document.getElementById(`${fieldType}-form-group`);
+                const successElement = document.getElementById(`${fieldType}-success`);
+                
+                if (formGroup && successElement) {
+                    formGroup.classList.add('success');
+                    formGroup.classList.remove('error');
+                    successElement.textContent = message;
+                    successElement.classList.add('show');
+                }
+            }
+            
+            function clearAllErrors() {
+                clearFieldError('app');
+                clearFieldError('email');
             }
             
             function showSuccessOverlay() {

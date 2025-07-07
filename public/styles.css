@@ -1118,6 +1118,95 @@ body {
   color: var(--color-white) !important;
 }
 
+/* Error States */
+.form-group.error input[type="text"],
+.form-group.error input[type="email"],
+.form-group.error .app-search-container {
+  border: 1px solid var(--color-coral);
+}
+
+.form-group.error input[type="text"]:focus,
+.form-group.error input[type="email"]:focus {
+  border: 1px solid var(--color-coral);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.error-message {
+  color: var(--color-coral);
+  font-size: var(--font-sm);
+  font-weight: var(--font-regular);
+  letter-spacing: var(--letter-normal);
+  margin-top: var(--space-1);
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.error-message.show {
+  display: flex;
+}
+
+.error-message::before {
+  content: "⚠";
+  font-size: var(--font-base);
+  font-weight: var(--font-medium);
+}
+
+/* Success States */
+.form-group.success input[type="text"],
+.form-group.success input[type="email"],
+.form-group.success .app-search-container {
+  border: 1px solid var(--color-mint);
+}
+
+.success-message {
+  color: var(--color-mint);
+  font-size: var(--font-sm);
+  font-weight: var(--font-regular);
+  letter-spacing: var(--letter-normal);
+  margin-top: var(--space-1);
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.success-message.show {
+  display: flex;
+}
+
+.success-message::before {
+  content: "✓";
+  font-size: var(--font-base);
+  font-weight: var(--font-medium);
+}
+
+/* Search Dropdown Error Messages */
+.search-error-item {
+  text-align: center;
+  color: var(--color-coral);
+  font-size: var(--font-sm);
+  font-weight: var(--font-regular);
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.search-error-item::before {
+  content: "⚠";
+  font-size: var(--font-base);
+  font-weight: var(--font-medium);
+}
+
+.search-no-results-item {
+  text-align: center;
+  color: var(--color-gray-400);
+  font-size: var(--font-sm);
+  font-weight: var(--font-regular);
+  padding: var(--space-4);
+}
+
 /* App Search Container */
 .app-search-container {
   position: relative;
@@ -1339,6 +1428,20 @@ body {
   transform: translateY(0);
 }
 
+.submit-btn:disabled {
+  background-color: var(--color-gray-400);
+  color: var(--color-gray-600);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submit-btn:disabled:hover {
+  background-color: var(--color-gray-400);
+  transform: none;
+  box-shadow: none;
+}
+
 /* Free Report Responsive */
 @media (max-width: 767px) {
   .free-report {
@@ -1510,7 +1613,7 @@ body {
   margin-bottom: var(--space-4);
 }
 
-.success-message {
+.success-overlay-message {
   font-size: var(--font-base);
   color: var(--color-gray-600);
   line-height: var(--line-relaxed);
