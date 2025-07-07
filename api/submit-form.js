@@ -32,10 +32,11 @@ export default async function handler(req, res) {
         const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
         
         if (!N8N_WEBHOOK_URL) {
-            console.error('N8N_WEBHOOK_URL environment variable not set');
+            console.error('❌ N8N_WEBHOOK_URL environment variable not set in Vercel');
+            console.error('Please add N8N_WEBHOOK_URL to Vercel Environment Variables');
             return res.status(500).json({ 
                 success: false,
-                message: 'Webhook configuration error' 
+                message: 'Webhook not configured. Please contact support or check back in a few minutes.' 
             });
         }
 
