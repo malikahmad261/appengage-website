@@ -468,6 +468,145 @@ body {
 }
 
 /* =============================================================================
+   STEPS SECTION
+   ============================================================================= */
+
+.steps-section {
+  background-color: var(--color-white);
+  padding: var(--space-16) 0;
+}
+
+.steps-title {
+  font-size: var(--font-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-gray-900);
+  text-align: center;
+  margin-bottom: var(--space-3);
+  line-height: var(--line-tight);
+}
+
+.steps-subtitle {
+  font-size: var(--font-lg);
+  color: var(--color-gray-600);
+  text-align: center;
+  margin-bottom: var(--space-12);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background-color: var(--color-gray-800);
+  border-radius: 16px;
+  transition: transform var(--transition-base) var(--easing-ease-out);
+}
+
+.step-item:hover {
+  transform: translateY(-2px);
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-semibold);
+  font-size: var(--font-lg);
+}
+
+.step-content {
+  flex: 1;
+  width: 100%;
+}
+
+.step-content h3 {
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-white);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-tight);
+}
+
+.step-content p {
+  font-size: var(--font-base);
+  color: var(--color-gray-300);
+  line-height: var(--line-relaxed);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .steps-section {
+    padding: var(--space-12) 0;
+  }
+  
+  .steps-title {
+    font-size: var(--font-2xl);
+  }
+  
+  .steps-subtitle {
+    font-size: var(--font-base);
+    margin-bottom: var(--space-8);
+  }
+  
+  .steps-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  
+  .step-item {
+    padding: var(--space-5);
+  }
+  
+  .step-content h3 {
+    font-size: var(--font-lg);
+  }
+  
+  .step-content p {
+    font-size: var(--font-sm);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .steps-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .steps-section {
+    padding: var(--space-20) 0;
+  }
+  
+  .steps-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+  
+  .step-item {
+    padding: var(--space-6);
+  }
+}
+
+/* =============================================================================
    SECTION DIVIDER
    ============================================================================= */
 
@@ -961,8 +1100,16 @@ body {
 .free-report .section-title {
   color: var(--color-white);
   text-align: center;
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-4);
   font-size: clamp(var(--font-2xl), 4vw + 1rem, var(--font-4xl));
+}
+
+.section-subtitle {
+  color: var(--color-gray-300);
+  text-align: center;
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-12);
+  font-weight: var(--font-medium);
 }
 
 .process-content {
@@ -1420,29 +1567,12 @@ body {
   }
   
   .free-report .section-title {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-3);
   }
   
-  .process-content {
-    gap: var(--space-8);
-  }
-  
-  .process-steps {
-    gap: var(--space-3);
-  }
-  
-  .step {
-    padding: var(--space-2) 0;
-    gap: var(--space-3);
-  }
-  
-  .step-svg {
-    width: 48px;
-    height: 48px;
-  }
-  
-  .step-text p {
+  .section-subtitle {
     font-size: var(--font-base);
+    margin-bottom: var(--space-8);
   }
   
   .form-container {
@@ -1464,12 +1594,8 @@ body {
     padding: var(--space-10) var(--space-8);
   }
   
-  .process-content {
-    gap: var(--space-10);
-  }
-  
   .form-container {
-
+    max-width: 600px;
     margin: 0 auto;
   }
 }
@@ -1489,33 +1615,35 @@ body {
   }
   
   .process-content {
-    grid-template-columns: 1fr 400px;
-    gap: var(--space-12);
-    align-items: start;
-  }
-  
-  .process-steps {
-    gap: var(--space-3);
-  }
-  
-  .step {
-    padding: var(--space-5);
-  }
-  
-  .step-text p {
-    font-size: var(--font-lg);
+    display: flex;
+    justify-content: center;
   }
   
   .form-container {
-    position: sticky;
-    top: var(--space-8);
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  .report-form {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--space-4);
+  }
+  
+  .form-group {
+    flex: 1;
+  }
+  
+  .submit-btn {
+    flex-shrink: 0;
+    height: fit-content;
+    margin-top: var(--space-8);
   }
 }
 
 @media (min-width: 1280px) {
-  .process-content {
-    grid-template-columns: 1fr 450px;
-    gap: var(--space-16);
+  .form-container {
+    max-width: 900px;
   }
   
   .free-report-background {
@@ -1737,5 +1865,67 @@ body {
   
   .footer-left {
     max-width: 400px;
+  }
+}
+
+/* =============================================================================
+   DEMO BOOKING PAGE
+   ============================================================================= */
+
+.demo-booking {
+  padding: var(--space-16) 0 var(--space-24);
+  background-color: var(--color-white);
+}
+
+.demo-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.demo-header {
+  margin-bottom: var(--space-12);
+}
+
+.demo-header h1 {
+  font-size: var(--font-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-black);
+  margin-bottom: var(--space-4);
+  line-height: var(--line-tight);
+}
+
+.demo-subtitle {
+  font-size: var(--font-lg);
+  color: var(--color-gray-600);
+  line-height: var(--line-relaxed);
+  margin-bottom: var(--space-8); /* Add padding between subtitle and calendar */
+}
+
+.calendar-container {
+  width: 100%;
+  min-height: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Mobile responsive adjustments for demo booking */
+@media (max-width: 767px) {
+  .demo-booking {
+    padding: var(--space-12) 0 var(--space-16);
+  }
+  
+  .demo-header h1 {
+    font-size: var(--font-3xl);
+  }
+  
+  .demo-subtitle {
+    font-size: var(--font-base);
+    margin-bottom: var(--space-6);
+  }
+  
+  .calendar-container {
+    min-height: 500px;
+    border-radius: 8px;
   }
 } 
