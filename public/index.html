@@ -393,7 +393,7 @@
                                     <div class="success-message" id="app-success"></div>
                                 </div>
                                 <div class="form-group" id="email-form-group">
-                                    <label for="email">Where should we send it?</label>
+                                    <label for="email">Enter your email</label>
                                     <input type="email" id="email" name="email" placeholder="your@company.com">
                                     <div class="error-message" id="email-error"></div>
                                     <div class="success-message" id="email-success"></div>
@@ -780,8 +780,13 @@
                         const result = await response.json();
                         
                         if (result.success) {
-                            // Track form submission event
-                            const selectedAppName = selectedApp ? selectedApp.title : 'Unknown';
+                            // Track form submission event - get app name from hidden input
+                            const selectedAppUrl = document.getElementById('selected-app-url').value;
+                            const selectedAppElement = document.getElementById('selected-app');
+                            const selectedAppName = selectedAppElement.style.display !== 'none' 
+                                ? document.getElementById('selected-app-name').textContent 
+                                : 'Unknown';
+                            
                             mixpanel.track('Form Submitted', {
                                 'Email': email,
                                 'App Name': selectedAppName
@@ -790,9 +795,8 @@
                             showSuccessOverlay();
                             form.reset();
                             clearAllErrors();
-                            const selectedApp = document.getElementById('selected-app');
                             const searchContainer = document.querySelector('.app-search-container');
-                            selectedApp.style.display = 'none';
+                            selectedAppElement.style.display = 'none';
                             searchContainer.style.display = 'block';
                         } else {
                             showFieldError('email', result.message || 'There was an error submitting your request. Please try again.');
