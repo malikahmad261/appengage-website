@@ -67,17 +67,15 @@ export default async function handler(req, res) {
 
         // Prepare data for n8n webhook in the EXACT format (matching your existing structure)
         const webhookData = JSON.stringify({
-            body: {
-                email: email,
-                googlePlayUrl: app_url,
-                timestamp: new Date().toISOString(),
-                source: 'admin_panel',
-                // Additional fields for sample reports
-                app_name: app_name,
-                prospect_name: prospect_name || 'Prospect',
-                report_id: reportId,
-                type: 'sample_report'
-            }
+            email: email,
+            googlePlayUrl: app_url,
+            timestamp: new Date().toISOString(),
+            source: 'admin_panel',
+            // Additional fields for sample reports
+            app_name: app_name,
+            prospect_name: prospect_name || 'Prospect',
+            report_id: reportId,
+            type: 'sample_report'
         });
 
         console.log('🚀 Generating sample report for:', app_name);
