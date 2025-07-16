@@ -119,7 +119,7 @@ export default async function handler(req, res) {
             ? `http://${req.headers.host}` 
             : `https://${req.headers.host}`;
         
-        const previewUrl = `${baseUrl}/samples/${reportId}.html`;
+        const previewUrl = `${baseUrl}/sample-reports/${reportId}.html`;
 
         // Return success response with preview URL
         return res.status(200).json({ 
