@@ -22,6 +22,9 @@
   ],
   "author": "AppEngage Team",
   "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  },
   "devDependencies": {
     "vercel": "^34.0.0"
   },
